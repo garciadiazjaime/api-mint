@@ -2,6 +2,8 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
+const apiEventsRoute = require('api-events').default
+
 const openDatabase = require('./util/openDatabase')
 const config = require('./config')
 
@@ -21,7 +23,8 @@ const startApp = confg =>
 
 openDatabase(props.dbUrl)
   .then(() => {
-    // app.use('/', routes)
+    // console.log('apiEventsRoute', apiEventsRoute)
+    app.use('/', apiEventsRoute)
     startApp(props)
   })
   .catch(console.log)
