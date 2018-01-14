@@ -1,11 +1,11 @@
-const express = require('express')
-const morgan = require('morgan')
-const bodyParser = require('body-parser')
+import express from 'express'
+import morgan from 'morgan'
+import bodyParser from 'body-parser'
+import apiNewsRoute  from 'mint-api-news'
+import apiEventsRoute  from 'mint-api-events'
 
-const apiEventsRoute = require('api-events').default
-
-const openDatabase = require('./util/openDatabase')
-const config = require('./config')
+import openDatabase from './util/openDatabase'
+import config from './config'
 
 const props = {
   ip: config.get('ip'),
@@ -23,7 +23,7 @@ const startApp = confg =>
 
 openDatabase(props.dbUrl)
   .then(() => {
-    // console.log('apiEventsRoute', apiEventsRoute)
+    app.use('/', apiNewsRoute)
     app.use('/', apiEventsRoute)
     startApp(props)
   })

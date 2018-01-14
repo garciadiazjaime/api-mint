@@ -1,6 +1,9 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+mongoose.set('debug', true)
+
+mongoose.Promise = global.Promise
 
 const openDatabase = dbUrl => mongoose.connect(dbUrl)
-mongoose.Promise = global.Promise
+
 
 module.exports = openDatabase
