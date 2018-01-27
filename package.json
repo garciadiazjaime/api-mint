@@ -6,7 +6,11 @@
   "scripts": {
     "build": "babel src -d dist",
     "dev": "nodemon -r dotenv/config ./dist/server",
-    "start": "node ./dist/server"
+    "start": "node ./dist/server",
+    "docker:build": "yarn build && docker build -t garciadiazjaime/api-mint .",
+    "docker:run": "docker run -d -p 49330:3030 --name events garciadiazjaime/api-mint",
+    "docker:push": "docker push garciadiazjaime/api-mint",
+    "docker:pull": "docker pull garciadiazjaime/api-mint"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",

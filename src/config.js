@@ -33,13 +33,13 @@ const config = convict({
       doc: 'Redis Host',
       format: '*',
       default: '127.0.0.1',
-      env: 'REDIS_HOST',
+      env: 'REDIS_PORT_6379_TCP_ADDR',
     },
     port: {
       doc: 'Redis Port',
       format: '*',
       default: '6379',
-      env: 'REDIS_PORT',
+      env: 'REDIS_PORT_6379_TCP_PORT',
     },
   },
   twitter: {

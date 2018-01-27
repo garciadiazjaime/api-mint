@@ -1,4 +1,4 @@
-FROM node:boron
+FROM node:wheezy
 
 ADD package.json /tmp/package.json
 
