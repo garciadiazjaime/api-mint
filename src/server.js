@@ -3,6 +3,8 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import apiNewsRoute  from 'mint-api-news'
 import apiEventsRoute  from 'mint-api-events'
+import apiEmailRoute from './routes/emailRoutes'
+import apiTwitterRoute from './routes/twitterRoutes'
 
 import openDatabase from './util/openDatabase'
 import config from './config'
@@ -25,6 +27,8 @@ openDatabase(props.dbUrl)
   .then(() => {
     app.use('/', apiNewsRoute)
     app.use('/', apiEventsRoute)
+    app.use('/', apiEmailRoute)
+    app.use('/', apiTwitterRoute)
     startApp(props)
   })
   .catch(console.log)

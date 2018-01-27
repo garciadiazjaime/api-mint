@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d dist",
-    "dev": "nodemon dist/server",
+    "dev": "nodemon ./dist/server",
     "start": "node ./dist/server"
   },
   "dependencies": {
@@ -15,7 +15,9 @@
     "mint-api-events": "^1.0.1",
     "mint-api-news": "^1.0.20",
     "mongoose": "^5.0.0-rc2",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "redis": "^2.8.0",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
