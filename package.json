@@ -5,12 +5,14 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d dist",
-    "dev": "nodemon ./dist/server",
+    "dev": "nodemon -r dotenv/config ./dist/server",
     "start": "node ./dist/server"
   },
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "body-parser": "^1.18.2",
     "convict": "^4.0.2",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "mint-api-events": "^1.0.1",
     "mint-api-news": "^1.0.20",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "nodemon": "^1.14.7"
   }
