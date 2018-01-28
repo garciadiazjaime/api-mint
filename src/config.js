@@ -47,7 +47,7 @@ const config = convict({
       doc: 'Sendgrid Token',
       format: '*',
       default: '',
-      env: 'SENDGRID_TOKEN',
+      env: 'SENDGRID_API_KEY',
     },
   },
   twitter: {
