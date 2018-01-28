@@ -15,8 +15,8 @@ router.get('/twitter', (req, res) => {
         tweets
       })
     })
-    .catch(() => {
-      res.status(500).send()
+    .catch(error => {
+      res.status(500).send(error)
     })
 })
 

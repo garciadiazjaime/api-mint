@@ -42,6 +42,14 @@ const config = convict({
       env: 'REDIS_PORT_6379_TCP_PORT',
     },
   },
+  sendgrid: {
+    token: {
+      doc: 'Sendgrid Token',
+      format: '*',
+      default: '',
+      env: 'SENDGRID_TOKEN',
+    },
+  },
   twitter: {
     otoken: {
       doc: 'Oauth Token',

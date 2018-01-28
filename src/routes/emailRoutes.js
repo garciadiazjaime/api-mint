@@ -1,27 +1,20 @@
 import express from 'express'
-import mongoose from 'mongoose'
 
-import EventModel from '../model/emailModel'
-
-mongoose.Promise = global.Promise
+import { emailSend } from '../services/emailService'
 
 const router = express.Router()
 
 router.post('/email', (req, res) => {
-  const { data } = req.body
-  const email = new EventModel(data)
-    email.save()
-      .then(results => {
-        res.send({
-          status: true
-        })
-      })
-      .catch(error => {
-        res.send({
-          status: false,
-          error
-        })
-      })
+  const { account } = req.query
+  const { body } = req
+
+  emailSend(account, body)
+    .then(() => {
+      res.send()
+    })
+    .catch(error => {
+      res.status(500).send(error)
+    })
 })
 
 export default router

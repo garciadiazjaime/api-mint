@@ -48,5 +48,6 @@ export async function getTweets(account) {
       })
     }
   }
-  return Promise.reject()
+
+  return Promise.reject('invalid params')
 }

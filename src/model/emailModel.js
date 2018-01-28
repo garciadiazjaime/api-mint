@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
 const EmailSchema = new mongoose.Schema({
-  data: String,
+  from: String,
+  subject: String,
+  message: String,
   to: String,
   created: { type: Date, default: Date.now }
 });
