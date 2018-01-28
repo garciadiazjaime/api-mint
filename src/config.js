@@ -43,37 +43,29 @@ const config = convict({
     },
   },
   twitter: {
-    focusmx: {
-      otoken: {
-        doc: 'Oauth Token',
-        format: '*',
-        default: '',
-        env: 'FOCUSMX_TW_OAUTH_TOKEN',
-      },
-      osecret: {
-        doc: 'Oauth Secret',
-        format: '*',
-        default: '',
-        env: 'FOCUSMX_TW_OAUTH_SECRET',
-      },
-      ckey: {
-        doc: 'Consumer Key',
-        format: '*',
-        default: '',
-        env: 'FOCUSMX_TW_CONSUMER_KEY',
-      },
-      csecret: {
-        doc: 'Consumer Secret',
-        format: '*',
-        default: '',
-        env: 'FOCUSMX_TW_CONSUMER_SECRET',
-      },
-      name: {
-        doc: 'Name',
-        format: '*',
-        default: '',
-        env: 'FOCUSMX_TW_USER'
-      }
+    otoken: {
+      doc: 'Oauth Token',
+      format: '*',
+      default: '',
+      env: 'TW_OAUTH_TOKEN',
+    },
+    osecret: {
+      doc: 'Oauth Secret',
+      format: '*',
+      default: '',
+      env: 'TW_OAUTH_SECRET',
+    },
+    ckey: {
+      doc: 'Consumer Key',
+      format: '*',
+      default: '',
+      env: 'TW_CONSUMER_KEY',
+    },
+    csecret: {
+      doc: 'Consumer Secret',
+      format: '*',
+      default: '',
+      env: 'TW_CONSUMER_SECRET',
     }
   }
 });

@@ -12,14 +12,11 @@ router.get('/twitter', (req, res) => {
   getTweets(account)
     .then(tweets => {
       res.send({
-        status: true,
         tweets
       })
     })
     .catch(() => {
-      res.send({
-        status: false,
-      })
+      res.status(500).send()
     })
 })
 
