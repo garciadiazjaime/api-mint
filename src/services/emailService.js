@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise
 sgMail.setApiKey(config.get('sendgrid.token'));
 
 const whiteListAccounts = {
-  'focusmx': 'jaime@mintitmedia.com' // info@focus.mx
+  'focusmx': 'info@focus.mx'
 }
 
 export async function emailSend(account, body) {
