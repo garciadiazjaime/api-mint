@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import apiNewsRoute  from 'mint-api-news'
 import apiEventsRoute  from 'mint-api-events'
+import cors from 'cors'
 
 import apiEmailRoute from './routes/emailRoutes'
 import apiTwitterRoute from './routes/twitterRoutes'
@@ -16,6 +17,7 @@ const props = {
 }
 const app = express()
 
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
