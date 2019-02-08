@@ -1,6 +1,5 @@
 import Twitter from 'twitter'
 
-import { getFromCache, setToCache } from './cacheService'
 import config from '../config'
 
 const url = {
@@ -28,25 +27,17 @@ export async function getTweets(account) {
   const twitterUser = whiteListAccounts[account]
 
   if (account && twitterUser) {
-    const cacheKey = `tw_${account}`
-    const data = await getFromCache(cacheKey)
+    return new Promise((resolve, reject) => {
+      const params = getParams(twitterUser)
 
-    if (data) {
-      return Promise.resolve(JSON.parse(data))
-    } else {
-      return new Promise((resolve, reject) => {
-        const params = getParams(twitterUser)
-
-        client.get(url.tweets, params, (error, tweets) => {
-          if (error) {
-            reject(error)
-          } else {
-            setToCache(cacheKey, JSON.stringify(tweets), 3600)
-            resolve(tweets)
-          }
-        })
+      client.get(url.tweets, params, (error, tweets) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(tweets)
+        }
       })
-    }
+    })
   }
 
   return Promise.reject('invalid params')
