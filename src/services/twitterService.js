@@ -1,6 +1,6 @@
-import Twitter from 'twitter'
+const Twitter = require('twitter')
 
-import config from '../config'
+const config = require('../config')
 
 const url = {
   tweets: 'statuses/user_timeline'
@@ -23,7 +23,7 @@ const getParams = twitterUser => ({
 
 const client = new Twitter(getProps())
 
-export async function getTweets(account) {
+async function getTweets(account) {
   const twitterUser = whiteListAccounts[account]
 
   if (account && twitterUser) {
@@ -42,3 +42,6 @@ export async function getTweets(account) {
 
   return Promise.reject('invalid params')
 }
+
+
+module.exports.getTweets = getTweets

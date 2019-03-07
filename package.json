@@ -4,9 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "babel src -d dist",
-    "dev": "nodemon -r dotenv/config ./dist/server",
-    "start": "node ./dist/server",
+    "dev": "nodemon -r dotenv/config ./src/server",
+    "start": "node ./src/server",
     "docker:build": "npm run build && docker build -t garciadiazjaime/api-mint .",
     "docker:run": "docker run -d -p 49330:3030 --name events garciadiazjaime/api-mint",
     "docker:push": "docker push garciadiazjaime/api-mint",

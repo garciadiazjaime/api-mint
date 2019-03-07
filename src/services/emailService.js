@@ -1,8 +1,8 @@
-import mongoose from 'mongoose'
-import sgMail from '@sendgrid/mail'
+const mongoose = require('mongoose')
+const sgMail = require('@sendgrid/mail')
 
-import EmailModel from '../model/emailModel'
-import config from '../config'
+const EmailModel = require('../model/emailModel')
+const config = require('../config')
 
 mongoose.Promise = global.Promise
 
@@ -13,7 +13,7 @@ const whiteListAccounts = {
   'focusmx:test': 'info@mintitmedia.com'
 }
 
-export async function emailSend(account, body) {
+async function emailSend(account, body) {
   const toEmail = whiteListAccounts[account]
   const { from, subject, message } = body
 
@@ -32,3 +32,6 @@ export async function emailSend(account, body) {
 
   return Promise.reject('invalid params') 
 }
+
+
+module.exports.emailSend = emailSend

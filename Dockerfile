@@ -1,4 +1,4 @@
-FROM node:wheezy
+FROM node:carbon
 
 ADD package.json /tmp/package.json
 
@@ -12,4 +12,4 @@ ADD . /usr/src/app
 
 EXPOSE 3030
 
-CMD [ "node", "./dist/server.js" ]
+CMD [ "node", "./src/server.js" ]

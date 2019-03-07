@@ -1,14 +1,15 @@
-import express from 'express'
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
-import apiNewsRoute  from 'mint-api-news'
-import apiEventsRoute  from 'mint-api-events'
-import cors from 'cors'
+const express = require('express')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const apiNewsRoute  = require('mint-api-news').default
+const apiEventsRoute  = require('mint-api-events').default
+const cors = require('cors')
 
-import apiEmailRoute from './routes/emailRoutes'
-import apiTwitterRoute from './routes/twitterRoutes'
-import openDatabase from './util/openDatabase'
-import config from './config'
+const apiEmailRoute = require('./routes/emailRoutes')
+const apiTwitterRoute = require('./routes/twitterRoutes')
+const apiCaptionRoute = require('./routes/captionRoutes')
+const openDatabase = require('./util/openDatabase')
+const config = require('./config')
 
 const props = {
   ip: config.get('ip'),
@@ -19,7 +20,7 @@ const app = express()
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.json({ extended: true, limit: '1mb' }))
 app.use(morgan('tiny'))
 
 const startApp = confg =>
@@ -31,6 +32,7 @@ openDatabase(props.dbUrl)
     app.use('/', apiEventsRoute)
     app.use('/', apiEmailRoute)
     app.use('/', apiTwitterRoute)
+    app.use('/', apiCaptionRoute)
     startApp(props)
   })
   .catch(console.log)

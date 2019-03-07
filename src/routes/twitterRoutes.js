@@ -1,9 +1,9 @@
-import express from 'express'
-import Twitter from 'twitter'
+const express = require('express')
+const Twitter = require('twitter')
 
-import EventModel from '../model/emailModel'
-import { getTweets } from '../services/twitterService'
-import config from '../config'
+const EventModel = require('../model/emailModel')
+const { getTweets } = require('../services/twitterService')
+const config = require('../config')
 
 const router = express.Router()
 
@@ -20,4 +20,4 @@ router.get('/twitter', (req, res) => {
     })
 })
 
-export default router
+module.exports = router

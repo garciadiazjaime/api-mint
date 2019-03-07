@@ -1,14 +1,11 @@
 const express = require('express')
 
-const { emailSend } = require('../services/emailService')
+const { saveCaption } = require('../services/captionService')
 
 const router = express.Router()
 
-router.post('/email', (req, res) => {
-  const { account } = req.query
-  const { body } = req
-
-  emailSend(account, body)
+router.post('/caption', (req, res) => {
+  saveCaption(req.body)
     .then(() => {
       res.send()
     })
