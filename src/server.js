@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const apiNewsRoute  = require('mint-api-news').default
 const apiEventsRoute  = require('mint-api-events').default
 const cors = require('cors')
-const debug = require('debug')('server')
+const debug = require('debug')('app:server')
 
 const apiEmailRoute = require('./routes/emailRoutes')
 const apiTwitterRoute = require('./routes/twitterRoutes')
@@ -24,8 +24,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ extended: true, limit: '1mb' }))
 app.use(morgan('tiny'))
 
-const startApp = confg =>
-  app.listen(confg.port, confg.ip, () => debug(`Express Running ${confg.ip}:${confg.port}`))
 
 openDatabase(props.dbUrl)
   .then(() => {
@@ -34,6 +32,6 @@ openDatabase(props.dbUrl)
     app.use('/', apiEmailRoute)
     app.use('/', apiTwitterRoute)
     app.use('/', apiCaptionRoute)
-    startApp(props)
+    app.listen(props.port, props.ip, () => debug(`Express Running ${props.ip}:${props.port}`))
   })
   .catch(debug)

@@ -1,6 +1,6 @@
 const redis = require('redis')
 const { promisify } = require('util')
-const debug = require('debug')('cacheService')
+const debug = require('debug')('app:cacheService')
 
 const config = require('../config')
 
