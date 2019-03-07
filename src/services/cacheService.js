@@ -1,5 +1,6 @@
 const redis = require('redis')
 const { promisify } = require('util')
+const debug = require('debug')('cacheService')
 
 const config = require('../config')
 
@@ -12,7 +13,7 @@ const getAsync = promisify(client.get).bind(client)
 const setAsync = promisify(client.set).bind(client)
 
 client.on("error", (err) => {
-  console.log("Error " + err)
+  debug("Error " + err)
 })
 
 function setToCache(key, value, minsToExpire) {
