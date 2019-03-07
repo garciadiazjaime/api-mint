@@ -27,6 +27,54 @@ const config = convict({
       default: 'mongodb://localhost:27017/mint',
       env: 'DB_URL',
     },
+  },
+  redis: {
+    host: {
+      doc: 'Redis Host',
+      format: '*',
+      default: '127.0.0.1',
+      env: 'REDIS_PORT_6379_TCP_ADDR',
+    },
+    port: {
+      doc: 'Redis Port',
+      format: '*',
+      default: '6379',
+      env: 'REDIS_PORT_6379_TCP_PORT',
+    },
+  },
+  sendgrid: {
+    token: {
+      doc: 'Sendgrid Token',
+      format: '*',
+      default: '',
+      env: 'SENDGRID_API_KEY',
+    },
+  },
+  twitter: {
+    otoken: {
+      doc: 'Oauth Token',
+      format: '*',
+      default: '',
+      env: 'TW_OAUTH_TOKEN',
+    },
+    osecret: {
+      doc: 'Oauth Secret',
+      format: '*',
+      default: '',
+      env: 'TW_OAUTH_SECRET',
+    },
+    ckey: {
+      doc: 'Consumer Key',
+      format: '*',
+      default: '',
+      env: 'TW_CONSUMER_KEY',
+    },
+    csecret: {
+      doc: 'Consumer Secret',
+      format: '*',
+      default: '',
+      env: 'TW_CONSUMER_SECRET',
+    }
   }
 });
 

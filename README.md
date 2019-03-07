@@ -1,19 +1,17 @@
-# Events API
+# Mint API
 
-[![Build Status](https://travis-ci.org/garciadiazjaime/api-events.svg)](https://travis-ci.org/garciadiazjaime/api-events)
+[![Build Status](https://travis-ci.org/garciadiazjaime/api-mint.svg)](https://travis-ci.org/garciadiazjaime/api-mint)
 
 ## Run project:
-a) Install Dependencies
 
-`yarn`
+- Move to right node version
+`nvm use`
 
-b) Start Server
+- Install Dependencies
+`npm i`
 
-`yarn dev`
+- Start Server
+
+`npm start`
 
 By default server will run on http://localhost:3030
-
-### Graphql Queries
-http://0.0.0.0:49161/weather?query={weather{celsius,fahrenheit,pressure,relativeHumidity,lightLevel}}
-
-http://0.0.0.0:49161/events?query={event(uuid:%22%22){title,image,description,url,uuid,price,date}}
