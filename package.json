@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "DEBUG=app* nodemon -r ./src/server",
     "start": "DEBUG=app* node ./src/server",
-    "docker:build": "npm run build && docker build -t garciadiazjaime/api-mint .",
+    "docker:build": "docker build -t garciadiazjaime/api-mint .",
     "docker:run": "docker run -d -p 49330:3030 --name events garciadiazjaime/api-mint",
     "docker:push": "docker push garciadiazjaime/api-mint",
     "docker:pull": "docker pull garciadiazjaime/api-mint"
