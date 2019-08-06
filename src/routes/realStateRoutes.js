@@ -6,12 +6,12 @@ const { savePlace } = require('../services/realStateService.js')
 
 const router = express.Router()
 
-router.use('/real-state', graphqlHTTP(() => ({
+router.use('/real-state/place', graphqlHTTP(() => ({
   schema: realStateSchema,
   graphiql: true,
 })))
 
-router.post('/real-state/place', async (req, res) => {
+router.post('/real-state', async (req, res) => {
   const { places } = req.body
 
   if (!places || !places.length) {
