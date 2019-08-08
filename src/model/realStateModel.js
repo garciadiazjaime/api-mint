@@ -10,8 +10,9 @@ const RealStateSchema = new mongoose.Schema({
   url: { type: String, unique: true },
   address: { type: String },
   city: { type: String },
-  source: { type: String },
-  created: { type: Date, default: Date.now }
+  source: { type: String }
+}, {
+  timestamps: true
 });
 
 const RealStateModel = mongoose.model('realStatePlace', RealStateSchema);

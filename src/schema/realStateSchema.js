@@ -44,7 +44,10 @@ const PlaceType = new GraphQLObjectType({
     source: {
       type: GraphQLString
     },
-    created: {
+    createdAt: {
+      type: GraphQLString
+    },
+    updatedAt: {
       type: GraphQLString
     }
   }),
@@ -67,7 +70,7 @@ const realStateSchema = new GraphQLSchema({
         },
         resolve: async (root, { first = 50, _id }) => {
           const query = _id ? { _id } : {};
-          const items = await RealStateModel.find(query).sort('-created').limit(first);
+          const items = await RealStateModel.find(query).sort('-updatedAt').limit(first);
 
           return items
         },
