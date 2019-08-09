@@ -3,10 +3,20 @@ const {
   GraphQLSchema,
   GraphQLString,
   GraphQLList,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLFloat
 } = require('graphql/type');
 
 const RealStateModel = require('../model/realStateModel');
+
+const ImagesType = new GraphQLObjectType({
+  name: 'Images',
+  fields: () => ({
+    value: {
+      type: GraphQLString
+    }
+  })
+})
 
 const PlaceType = new GraphQLObjectType({
   name: 'Place',
@@ -15,7 +25,7 @@ const PlaceType = new GraphQLObjectType({
       type: GraphQLString,
     },
     price: {
-      type: GraphQLString,
+      type: GraphQLFloat,
     },
     currency: {
       type: GraphQLString,
@@ -29,8 +39,8 @@ const PlaceType = new GraphQLObjectType({
     longitude: {
       type: GraphQLString
     },
-    image: {
-      type: GraphQLString
+    images: {
+      type: new GraphQLList(GraphQLString)
     },
     url: {
       type: GraphQLString
@@ -53,6 +63,28 @@ const PlaceType = new GraphQLObjectType({
   }),
 });
 
+function getQuery(minPrice, maxPrice, keyword) {
+  const query = {}
+
+  if (minPrice || maxPrice) {
+    query.price = {}
+
+    if (minPrice) {
+      query.price['$gte'] = minPrice
+    }
+
+    if (maxPrice) {
+      query.price['$lte'] = maxPrice
+    }
+  }
+
+  if (keyword) {
+    query['$text'] = {$search: keyword}
+  }
+
+  return query
+}
+
 const realStateSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
@@ -66,10 +98,19 @@ const realStateSchema = new GraphQLSchema({
           },
           first: {
             type: GraphQLInt
+          },
+          minPrice: {
+            type: GraphQLFloat
+          },
+          maxPrice: {
+            type: GraphQLFloat
+          },
+          keyword: {
+            type: GraphQLString
           }
         },
-        resolve: async (root, { first = 50, _id }) => {
-          const query = _id ? { _id } : {};
+        resolve: async (root, {_id, first = 50, minPrice, maxPrice, keyword}) => {
+          const query = getQuery(minPrice, maxPrice, keyword)
           const items = await RealStateModel.find(query).sort('-updatedAt').limit(first);
 
           return items
