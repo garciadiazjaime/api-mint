@@ -9,15 +9,6 @@ const {
 
 const RealStateModel = require('../model/realStateModel');
 
-const ImagesType = new GraphQLObjectType({
-  name: 'Images',
-  fields: () => ({
-    value: {
-      type: GraphQLString
-    }
-  })
-})
-
 const PlaceType = new GraphQLObjectType({
   name: 'Place',
   fields: () => ({
@@ -85,6 +76,23 @@ function getQuery(minPrice, maxPrice, keyword) {
   return query
 }
 
+function convertToUSD(item) {
+  if (item.currency === "USD") {
+    return item;
+  }
+
+  const rate = 20;
+
+  item.currency = "USD";
+  item.price /= rate;
+
+  return item;
+}
+
+function sortByPrice(data) {
+  return data.map(convertToUSD).sort((a, b) => a.price - b.price);
+}
+
 const realStateSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
@@ -113,7 +121,9 @@ const realStateSchema = new GraphQLSchema({
           const query = getQuery(minPrice, maxPrice, keyword)
           const items = await RealStateModel.find(query).sort('-updatedAt').limit(first);
 
-          return items
+          const sortedItems = sortByPrice(items);
+
+          return sortedItems
         },
       },
     },
