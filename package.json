@@ -9,7 +9,8 @@
     "docker:build": "docker build -t garciadiazjaime/api-mint .",
     "docker:run": "docker run -d -p 49330:3030 --name events garciadiazjaime/api-mint",
     "docker:push": "docker push garciadiazjaime/api-mint && echo 'docker pull garciadiazjaime/api-mint'",
-    "docker:pull": "docker pull garciadiazjaime/api-mint"
+    "docker:pull": "docker pull garciadiazjaime/api-mint",
+    "deploy": "npm run docker:build && npm run docker:push && echo \"docker pull garciadiazjaime/api-mint\""
   },
   "dependencies": {
     "@sendgrid/mail": "^6.2.1",

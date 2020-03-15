@@ -12,13 +12,13 @@ router.use('/real-state/place', graphqlHTTP(() => ({
 })))
 
 router.post('/real-state', async (req, res) => {
-  const { places } = req.body
+  const { data } = req.body
 
-  if (!places || !places.length) {
+  if (!data || !data.length) {
     return res.send()
   }
 
-  await Promise.all(places.map(savePlace))
+  await Promise.all(data.map(savePlace))
 
   res.send()
 })

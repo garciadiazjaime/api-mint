@@ -54,7 +54,7 @@ const PlaceType = new GraphQLObjectType({
   }),
 });
 
-function getQuery(minPrice, maxPrice, keyword) {
+function getQuery(city, minPrice, maxPrice, keyword) {
   const query = {}
 
   if (minPrice || maxPrice) {
@@ -67,6 +67,10 @@ function getQuery(minPrice, maxPrice, keyword) {
     if (maxPrice) {
       query.price['$lte'] = maxPrice
     }
+  }
+
+  if (city) {
+    query.city = city
   }
 
   if (keyword) {
@@ -107,6 +111,9 @@ const realStateSchema = new GraphQLSchema({
           first: {
             type: GraphQLInt
           },
+          city: {
+            type: GraphQLString
+          },
           minPrice: {
             type: GraphQLFloat
           },
@@ -117,8 +124,8 @@ const realStateSchema = new GraphQLSchema({
             type: GraphQLString
           }
         },
-        resolve: async (root, {_id, first = 50, minPrice, maxPrice, keyword}) => {
-          const query = getQuery(minPrice, maxPrice, keyword)
+        resolve: async (root, {_id, first = 50, city, minPrice, maxPrice, keyword}) => {
+          const query = getQuery(city, minPrice, maxPrice, keyword)
           const items = await RealStateModel.find(query).sort('-updatedAt').limit(first);
 
           const sortedItems = sortByPrice(items);
