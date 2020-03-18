@@ -62,6 +62,9 @@ const CustomType = new GraphQLObjectType({
     source: {
       type: GraphQLString
     },
+    state: {
+      type: GraphQLString
+    },
     createdAt: {
       type: GraphQLString
     },
@@ -71,7 +74,7 @@ const CustomType = new GraphQLObjectType({
   }),
 });
 
-function getQuery(city, keyword) {
+function getQuery(city, keyword, state = 'CREATED') {
   const query = {}
 
   if (city) {
@@ -80,6 +83,10 @@ function getQuery(city, keyword) {
 
   if (keyword) {
     query['$text'] = {$search: keyword}
+  }
+
+  if (state) {
+    query.state = state
   }
 
   return query
@@ -98,10 +105,13 @@ const Schema = new GraphQLSchema({
           },
           keyword: {
             type: GraphQLString
+          },
+          state: {
+            type: GraphQLString
           }
         },
-        resolve: async (root, {first = 50, city, keyword}) => {
-          const query = getQuery(city, keyword)
+        resolve: async (root, {first = 50, city, keyword, state}) => {
+          const query = getQuery(city, keyword, state)
           const items = await Model.find(query).sort('-updatedAt').limit(first);
 
           return items

@@ -10,7 +10,8 @@ const Schema = new mongoose.Schema({
   likeCount: { type: Number },
   children: { type: Array },
   city: { type: String },
-  source: { type: String }
+  source: { type: String },
+  state: { type: String }
 }, {
   timestamps: true
 });

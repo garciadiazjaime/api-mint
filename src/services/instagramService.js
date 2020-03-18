@@ -3,12 +3,25 @@ const Model = require('../model/instagramModel')
 function save (data) {
   return Model.findOneAndUpdate({
     id: data.id
-  }, data, {
+  }, {
+    ...data,
+    state: 'CREATED'
+   }, {
     new: true,
     upsert: true
   })
 }
 
+
+function schedule(postId) {
+  return Model.findOneAndUpdate({
+    _id: postId
+  }, {
+    state: 'SCHEDULED'
+  })
+}
+
 module.exports = {
-  save
+  save,
+  schedule
 }
