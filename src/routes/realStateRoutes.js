@@ -2,11 +2,11 @@ const express = require('express')
 const graphqlHTTP = require('express-graphql')
 
 const realStateSchema = require('../schema/realStateSchema')
-const { savePlace } = require('../services/realStateService.js')
+const { save } = require('../services/realStateService')
 
 const router = express.Router()
 
-router.use('/real-state/place', graphqlHTTP(() => ({
+router.use('/real-state/graphiql', graphqlHTTP(() => ({
   schema: realStateSchema,
   graphiql: true,
 })))
@@ -18,9 +18,9 @@ router.post('/real-state', async (req, res) => {
     return res.send()
   }
 
-  await Promise.all(data.map(savePlace))
+  const response = await Promise.all(data.map(save))
 
-  res.send()
+  res.send(response)
 })
 
 
