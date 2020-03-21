@@ -2,7 +2,7 @@ const express = require('express')
 const graphqlHTTP = require('express-graphql')
 
 const instagramSchema = require('../schema/instagramSchema')
-const { save, schedule } = require('../services/instagramService')
+const { save, schedule, remove } = require('../services/instagramService')
 
 const router = express.Router()
 
@@ -27,6 +27,14 @@ router.post('/instagram/post/:postId/schedule', async (req, res) => {
   const{ postId } = req.params
 
   const response = await schedule(postId)
+
+  res.send(response)
+})
+
+router.post('/instagram/post/:postId/remove', async (req, res) => {
+  const{ postId } = req.params
+
+  const response = await remove(postId)
 
   res.send(response)
 })

@@ -112,7 +112,7 @@ const Schema = new GraphQLSchema({
         },
         resolve: async (root, {first = 50, city, keyword, state}) => {
           const query = getQuery(city, keyword, state)
-          const items = await Model.find(query).sort('-updatedAt').limit(first);
+          const items = await Model.find(query).sort('-likeCount').limit(first);
 
           return items
         },

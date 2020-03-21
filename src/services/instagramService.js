@@ -21,7 +21,16 @@ function schedule(postId) {
   })
 }
 
+function remove(postId) {
+  return Model.findOneAndUpdate({
+    _id: postId
+  }, {
+    state: 'REMOVED'
+  })
+}
+
 module.exports = {
   save,
-  schedule
+  schedule,
+  remove
 }
