@@ -15,7 +15,7 @@ const RealStateSchema = new mongoose.Schema({
   timestamps: true
 });
 
-RealStateSchema.index({ name: 'text', description: 'text', address: 'text'});
+RealStateSchema.index({ description: 'text', address: 'text'});
 
 
 const RealStateModel = mongoose.model('realStatePlace', RealStateSchema);
