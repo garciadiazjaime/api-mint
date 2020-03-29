@@ -85,7 +85,7 @@ function convertToUSD(item) {
     return item;
   }
 
-  const rate = 20;
+  const rate = 24;
 
   item.currency = "USD";
   item.price /= rate;
