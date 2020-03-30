@@ -85,10 +85,10 @@ function convertToUSD(item) {
     return item;
   }
 
-  const rate = 24;
+  const rate = 22;
 
   item.currency = "USD";
-  item.price /= rate;
+  item.price = Math.round(item.price / rate);
 
   return item;
 }
