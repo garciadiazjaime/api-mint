@@ -6,7 +6,7 @@ const {
   GraphQLInt,
 } = require('graphql/type');
 
-const Model = require('../model/instagramModel');
+const {PostModel} = require('../model/instagramModel');
 
 const CustomChildrenType = new GraphQLObjectType({
   name: 'Children',
@@ -103,16 +103,19 @@ const Schema = new GraphQLSchema({
             name: '_id',
             type: GraphQLString,
           },
+          first: {
+            type: GraphQLInt
+          },
           keyword: {
             type: GraphQLString
           },
           state: {
             type: GraphQLString
-          }
+          },
         },
         resolve: async (root, {first = 50, city, keyword, state}) => {
           const query = getQuery(city, keyword, state)
-          const items = await Model.find(query).sort('-likeCount').limit(first);
+          const items = await PostModel.find(query).sort('-likeCount').limit(first);
 
           return items
         },
