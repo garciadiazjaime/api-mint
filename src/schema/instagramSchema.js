@@ -38,7 +38,7 @@ const userType = new GraphQLObjectType({
     username: {
       type: GraphQLString
     },
-    fullMame: {
+    fullName: {
       type: GraphQLString
     },
     profilePicture: {

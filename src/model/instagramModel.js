@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
   id: { type: String, unique: true},
   username: {type: String},
-  fullMame: {type: String},
+  fullName: {type: String},
   profilePicture: {type: String}
 })
 
