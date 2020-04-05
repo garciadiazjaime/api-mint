@@ -26,6 +26,69 @@ const CustomChildrenType = new GraphQLObjectType({
   }),
 });
 
+const userType = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    _id: {
+      type: GraphQLString
+    },
+    id: {
+      type: GraphQLString
+    },
+    username: {
+      type: GraphQLString
+    },
+    fullMame: {
+      type: GraphQLString
+    },
+    profilePicture: {
+      type: GraphQLString
+    }
+  }),
+});
+
+const addressType = new GraphQLObjectType({
+  name: 'Address',
+  fields: () => ({
+    _id: {
+      type: GraphQLString
+    },
+    street: {
+      type: GraphQLString
+    },
+    zipCode: {
+      type: GraphQLString
+    },
+    city: {
+      type: GraphQLString
+    },
+    country: {
+      type: GraphQLString
+    }
+  }),
+});
+
+const locationType = new GraphQLObjectType({
+  name: 'Location',
+  fields: () => ({
+    _id: {
+      type: GraphQLString
+    },
+    id: {
+      type: GraphQLString
+    },
+    name: {
+      type: GraphQLString
+    },
+    slug: {
+      type: GraphQLString
+    },
+    address: {
+      type: addressType
+    }
+  }),
+});
+
 const CustomType = new GraphQLObjectType({
   name: 'Post',
   fields: () => ({
@@ -64,6 +127,12 @@ const CustomType = new GraphQLObjectType({
     },
     state: {
       type: GraphQLString
+    },
+    user: {
+      type: userType
+    },
+    location: {
+      type: locationType
     },
     createdAt: {
       type: GraphQLString
