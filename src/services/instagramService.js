@@ -33,8 +33,8 @@ function getPost(postId) {
   return PostModel.findById(postId)
 }
 
-function addUserToPost(post, user) {
-  post.state= 'MAPPED'
+function addUserToPost(post, user, state) {
+  post.state= state || 'MAPPED'
 
   if (user && user._id) {
     post.userId = user._id

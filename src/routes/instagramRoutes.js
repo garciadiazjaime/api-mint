@@ -25,13 +25,13 @@ router.post('/instagram/post', async (req, res) => {
 
 router.post('/instagram/post/:postId/place', async (req, res) => {
   const{ postId } = req.params
-  const { user, location } = req.body
+  const { user, location, state } = req.body
 
   const post = await getPost(postId)
 
   const userResponse = await saveUser(user, location, post)
 
-  const postResponse = await addUserToPost(post, userResponse)
+  const postResponse = await addUserToPost(post, userResponse, state)
 
   res.send({
     userResponse,
