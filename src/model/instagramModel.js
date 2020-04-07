@@ -9,8 +9,10 @@ const AddressSchema = new mongoose.Schema({
 const LocationSchema = new mongoose.Schema({
   id: { type:String, unique: true},
   name: {type: String},
-  slug: {type: String, unique: true},
-  address: AddressSchema
+  slug: {type: String},
+  latitude: {type: String},
+  longitude: {type: String},
+  address: AddressSchema,
 })
 
 

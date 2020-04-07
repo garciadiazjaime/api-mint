@@ -89,6 +89,12 @@ const locationType = new GraphQLObjectType({
     slug: {
       type: GraphQLString
     },
+    latitude: {
+      type: GraphQLString
+    },
+    longitude: {
+      type: GraphQLString
+    },
     address: {
       type: addressType
     }
