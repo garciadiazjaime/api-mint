@@ -1,15 +1,5 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-  id: { type: String, unique: true},
-  username: {type: String},
-  fullName: {type: String},
-  profilePicture: {type: String}
-})
-
-const UserModel = mongoose.model('instagramUser', UserSchema);
-
-
 const AddressSchema = new mongoose.Schema({
   street: {type:String},
   zipCode: {type: String},
@@ -22,8 +12,6 @@ const LocationSchema = new mongoose.Schema({
   slug: {type: String, unique: true},
   address: AddressSchema
 })
-
-const LocationModel = mongoose.model('instagramLocation', LocationSchema);
 
 
 const PostSchema = new mongoose.Schema({
@@ -38,19 +26,29 @@ const PostSchema = new mongoose.Schema({
   city: { type: String },
   source: { type: String },
   state: { type: String },
-  user: UserSchema,
-  location: LocationSchema
+  userId: { type: String },
 }, {
   timestamps: true
 });
 
 PostSchema.index({ id: 'text' });
 
+
+const UserSchema = new mongoose.Schema({
+  id: { type: String, unique: true},
+  username: {type: String},
+  fullName: {type: String},
+  profilePicture: {type: String},
+  post: PostSchema,
+  location: LocationSchema
+})
+
+
 const PostModel = mongoose.model('instagramPost', PostSchema);
+const UserModel = mongoose.model('instagramUser', UserSchema);
 
 
 module.exports = {
   PostModel,
   UserModel,
-  LocationModel
 }

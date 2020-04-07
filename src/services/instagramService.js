@@ -1,4 +1,4 @@
-const {PostModel, UserModel, LocationModel} = require('../model/instagramModel')
+const {PostModel, UserModel} = require('../model/instagramModel')
 
 function save (data) {
   return PostModel.findOneAndUpdate({
@@ -29,28 +29,27 @@ function remove(postId) {
   })
 }
 
-function addUserLocationToPost(postId, user, location) {
-  const data = {
-    state: 'MAPPED'
-  }
-
-  if (user) {
-    data.user = user
-  }
-
-  if(location) {
-    data.location = location
-  }
-
-  return PostModel.findOneAndUpdate({
-    _id: postId
-  }, data)
+function getPost(postId) {
+  return PostModel.findById(postId)
 }
 
-function saveUser(user) {
+function addUserToPost(post, user) {
+  post.state= 'MAPPED'
+
+  if (user && user._id) {
+    post.userId = user._id
+  }
+
+  return post.save()
+}
+
+function saveUser(user, location, post) {
   if (!user) {
     return
   }
+
+  user.post = post
+  user.location = location
 
   return UserModel.findOneAndUpdate({
     id: user.id
@@ -60,24 +59,11 @@ function saveUser(user) {
   })
 }
 
-function saveLocation(location) {
-  if (!location) {
-    return 
-  }
-
-  return LocationModel.findOneAndUpdate({
-    id: location.id
-  }, location, {
-    new: true,
-    upsert: true
-  })
-}
-
 module.exports = {
   save,
   schedule,
   remove,
-  addUserLocationToPost,
+  getPost,
+  addUserToPost,
   saveUser,
-  saveLocation,
 }

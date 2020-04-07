@@ -6,7 +6,7 @@ const {
   GraphQLInt,
 } = require('graphql/type');
 
-const {PostModel} = require('../model/instagramModel');
+const {PostModel, UserModel} = require('../model/instagramModel');
 
 const CustomChildrenType = new GraphQLObjectType({
   name: 'Children',
@@ -43,6 +43,12 @@ const userType = new GraphQLObjectType({
     },
     profilePicture: {
       type: GraphQLString
+    },
+    location: {
+      type: locationType
+    },
+    post: {
+      type: PostType
     }
   }),
 });
@@ -89,7 +95,7 @@ const locationType = new GraphQLObjectType({
   }),
 });
 
-const CustomType = new GraphQLObjectType({
+const PostType = new GraphQLObjectType({
   name: 'Post',
   fields: () => ({
     _id: {
@@ -128,11 +134,8 @@ const CustomType = new GraphQLObjectType({
     state: {
       type: GraphQLString
     },
-    user: {
-      type: userType
-    },
-    location: {
-      type: locationType
+    userId: {
+      type: GraphQLString
     },
     createdAt: {
       type: GraphQLString
@@ -163,10 +166,10 @@ function getQuery(city, keyword, state = 'CREATED') {
 
 const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
-    name: 'Query',
+    name: 'Instagram',
     fields: {
       posts: {
-        type: new GraphQLList(CustomType),
+        type: new GraphQLList(PostType),
         args: {
           _id: {
             name: '_id',
@@ -189,6 +192,22 @@ const Schema = new GraphQLSchema({
           return items
         },
       },
+
+      users: {
+        type: new GraphQLList(userType),
+        args: {
+          _id: {
+            name: '_id',
+            type: GraphQLString
+          }
+        },
+        resolve: async (root, {first = 50}) => {
+          const query  = {}
+          const items = await UserModel.find(query).sort('username').limit(first)
+
+          return items
+        }
+      }
     },
   }),
 });
