@@ -62,8 +62,8 @@ async function saveUser(user, location, post) {
 
   userRecord.post = post
   userRecord.location = location
-  if (userRecord.options) {
-    userRecord.options.push(user.options)
+  if (Array.isArray(userRecord.options) && Array.isArray(post.options)) {
+    userRecord.options.push(...post.options)
   } else {
     userRecord.options = user.options
   }
