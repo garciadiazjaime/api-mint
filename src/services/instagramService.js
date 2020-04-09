@@ -62,6 +62,7 @@ async function saveUser(user, location, post) {
 
   userRecord.post = post
   userRecord.location = location
+
   if (Array.isArray(userRecord.options) && Array.isArray(user.options)) {
     user.options.forEach(option => {
       if (!userRecord.options.includes(option)) {
@@ -70,6 +71,16 @@ async function saveUser(user, location, post) {
     })
   } else {
     userRecord.options = user.options
+  }
+
+  if (Array.isArray(userRecord.phones) && Array.isArray(user.phones)) {
+    user.phones.forEach(phone => {
+      if (!userRecord.phones.includes(phone)) {
+        userRecord.phones.push(phone)
+      }
+    })
+  } else if (Array.isArray(user.phones)) {
+    userRecord.phones = user.phones
   }
 
   return userRecord.save()
