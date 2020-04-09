@@ -49,6 +49,9 @@ const userType = new GraphQLObjectType({
     },
     post: {
       type: PostType
+    },
+    options: {
+      type: new GraphQLList(GraphQLString)
     }
   }),
 });
@@ -148,6 +151,9 @@ const PostType = new GraphQLObjectType({
     },
     updatedAt: {
       type: GraphQLString
+    },
+    options: {
+      type: new GraphQLList(GraphQLString)
     }
   }),
 });

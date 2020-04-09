@@ -29,6 +29,7 @@ const PostSchema = new mongoose.Schema({
   source: { type: String },
   state: { type: String },
   userId: { type: String },
+  options: { type: Array }
 }, {
   timestamps: true
 });
@@ -42,7 +43,8 @@ const UserSchema = new mongoose.Schema({
   fullName: {type: String},
   profilePicture: {type: String},
   post: PostSchema,
-  location: LocationSchema
+  location: LocationSchema,
+  options: { type: Array }
 })
 
 

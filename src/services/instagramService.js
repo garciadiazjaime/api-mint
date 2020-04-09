@@ -1,6 +1,6 @@
 const {PostModel, UserModel} = require('../model/instagramModel')
 
-function save (data) {
+function savePost (data) {
   return PostModel.findOneAndUpdate({
     id: data.id
   }, {
@@ -43,24 +43,36 @@ function addUserToPost(post, user, state) {
   return post.save()
 }
 
-function saveUser(user, location, post) {
+async function saveUser(user, location, post) {
   if (!user) {
     return
   }
 
-  user.post = post
-  user.location = location
-
-  return UserModel.findOneAndUpdate({
+  const userRecord = await UserModel.findOne({
     id: user.id
-  }, user, {
-    new: true,
-    upsert: true
   })
+
+  if (!userRecord) {
+    user.post = post
+    user.location = location
+    user.options = post.options
+
+    return new UserModel(user).save()
+  }
+
+  userRecord.post = post
+  userRecord.location = location
+  if (userRecord.options) {
+    userRecord.options.push(user.options)
+  } else {
+    userRecord.options = user.options
+  }
+
+  return userRecord.save()
 }
 
 module.exports = {
-  save,
+  savePost,
   schedule,
   remove,
   getPost,
