@@ -55,15 +55,15 @@ async function saveUser(user, location, post) {
   if (!userRecord) {
     user.post = post
     user.location = location
-    user.options = post.options
+    user.options = user.options
 
     return new UserModel(user).save()
   }
 
   userRecord.post = post
   userRecord.location = location
-  if (Array.isArray(userRecord.options) && Array.isArray(post.options)) {
-    userRecord.options.push(...post.options)
+  if (Array.isArray(userRecord.options) && Array.isArray(user.options)) {
+    userRecord.options.push(...user.options)
   } else {
     userRecord.options = user.options
   }
