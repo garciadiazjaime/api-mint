@@ -52,6 +52,9 @@ const userType = new GraphQLObjectType({
     },
     options: {
       type: new GraphQLList(GraphQLString)
+    },
+    phones: {
+      type: new GraphQLList(GraphQLString)
     }
   }),
 });
@@ -153,6 +156,9 @@ const PostType = new GraphQLObjectType({
       type: GraphQLString
     },
     options: {
+      type: new GraphQLList(GraphQLString)
+    },
+    phones: {
       type: new GraphQLList(GraphQLString)
     }
   }),
