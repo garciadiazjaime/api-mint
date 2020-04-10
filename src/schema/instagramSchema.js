@@ -6,7 +6,7 @@ const {
   GraphQLInt,
 } = require('graphql/type');
 
-const {PostModel, UserModel} = require('../model/instagramModel');
+const { PostModel, BrandModel } = require('../model/instagramModel');
 
 const CustomChildrenType = new GraphQLObjectType({
   name: 'Children',
@@ -26,8 +26,8 @@ const CustomChildrenType = new GraphQLObjectType({
   }),
 });
 
-const userType = new GraphQLObjectType({
-  name: 'User',
+const brandType = new GraphQLObjectType({
+  name: 'Brand',
   fields: () => ({
     _id: {
       type: GraphQLString
@@ -55,7 +55,13 @@ const userType = new GraphQLObjectType({
     },
     phones: {
       type: new GraphQLList(GraphQLString)
-    }
+    },
+    rank: {
+      type: GraphQLInt
+    },
+    state: {
+      type: GraphQLString
+    },
   }),
 });
 
@@ -154,33 +160,9 @@ const PostType = new GraphQLObjectType({
     },
     updatedAt: {
       type: GraphQLString
-    },
-    options: {
-      type: new GraphQLList(GraphQLString)
-    },
-    phones: {
-      type: new GraphQLList(GraphQLString)
     }
   }),
 });
-
-function getQuery(city, keyword, state = 'CREATED') {
-  const query = {}
-
-  if (city) {
-    query.city = city
-  }
-
-  if (keyword) {
-    query['$text'] = {$search: keyword}
-  }
-
-  if (state) {
-    query.state = state
-  }
-
-  return query
-}
 
 const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -189,10 +171,6 @@ const Schema = new GraphQLSchema({
       posts: {
         type: new GraphQLList(PostType),
         args: {
-          _id: {
-            name: '_id',
-            type: GraphQLString,
-          },
           first: {
             type: GraphQLInt
           },
@@ -203,25 +181,48 @@ const Schema = new GraphQLSchema({
             type: GraphQLString
           },
         },
-        resolve: async (root, {first = 50, city, keyword, state}) => {
-          const query = getQuery(city, keyword, state)
+        resolve: async (root, {first = 50, keyword, state = 'CREATED'}) => {
+          const query = {}
+
+          if (keyword) {
+            query['$text'] = { $search: keyword }
+          }
+
+          if (state) {
+            query.state = state
+          }
+
           const items = await PostModel.find(query).sort('-likeCount').limit(first);
 
           return items
         },
       },
 
-      users: {
-        type: new GraphQLList(userType),
+      brands: {
+        type: new GraphQLList(brandType),
         args: {
-          _id: {
-            name: '_id',
+          first: {
+            type: GraphQLInt
+          },
+          keyword: {
             type: GraphQLString
-          }
+          },
+          state: {
+            type: GraphQLString
+          },
         },
-        resolve: async (root, {first = 50}) => {
+        resolve: async (root, {first = 50, keyword, state = 'CREATED'}) => {
           const query  = {}
-          const items = await UserModel.find(query).sort('username').limit(first)
+
+          if (keyword) {
+            query['$text'] = { $search: keyword }
+          }
+
+          if (state) {
+            query.state = state
+          }
+
+          const items = await BrandModel.find(query).sort('-rank').limit(first)
 
           return items
         }

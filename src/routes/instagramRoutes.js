@@ -2,7 +2,7 @@ const express = require('express')
 const graphqlHTTP = require('express-graphql')
 
 const instagramSchema = require('../schema/instagramSchema')
-const { savePost, schedule, remove, getPost, saveUser, addUserToPost } = require('../services/instagramService')
+const { savePost, schedule, remove, getPost, saveBrand, updateBrand, addBrandToPost } = require('../services/instagramService')
 
 const router = express.Router()
 
@@ -23,18 +23,18 @@ router.post('/instagram/post', async (req, res) => {
   res.send(response)
 })
 
-router.post('/instagram/post/:postId/place', async (req, res) => {
-  const{ postId } = req.params
-  const { user, location, state } = req.body
+router.post('/instagram/post/:postId/brand', async (req, res) => {
+  const { postId } = req.params
+  const { brand, postState } = req.body
 
   const post = await getPost(postId)
 
-  const userResponse = await saveUser(user, location, post)
+  const brandResponse = await saveBrand(brand)
 
-  const postResponse = await addUserToPost(post, userResponse, state)
+  const postResponse = await addBrandToPost(post, brandResponse, postState)
 
   res.send({
-    userResponse,
+    brandResponse,
     postResponse
   })
 })
@@ -51,6 +51,18 @@ router.post('/instagram/post/:postId/remove', async (req, res) => {
   const{ postId } = req.params
 
   const response = await remove(postId)
+
+  res.send(response)
+})
+
+router.post('/instagram/brands/meta', async (req, res) => {
+  const { data } = req.body
+
+  if (!Array.isArray(data) || !data.length) {
+    return res.send()
+  }
+
+  const response = await Promise.all(data.map(updateBrand))
 
   res.send(response)
 })
