@@ -152,7 +152,7 @@ const PostType = new GraphQLObjectType({
     state: {
       type: GraphQLString
     },
-    userId: {
+    brandId: {
       type: GraphQLString
     },
     createdAt: {
@@ -181,7 +181,7 @@ const Schema = new GraphQLSchema({
             type: GraphQLString
           },
         },
-        resolve: async (root, {first = 50, keyword, state = 'CREATED'}) => {
+        resolve: async (root, {first = 50, keyword, state }) => {
           const query = {}
 
           if (keyword) {
@@ -211,7 +211,7 @@ const Schema = new GraphQLSchema({
             type: GraphQLString
           },
         },
-        resolve: async (root, {first = 50, keyword, state = 'CREATED'}) => {
+        resolve: async (root, {first = 50, keyword, state }) => {
           const query  = {}
 
           if (keyword) {

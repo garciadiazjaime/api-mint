@@ -1,4 +1,4 @@
-const {PostModel, BrandModel} = require('../model/instagramModel')
+const { PostModel, BrandModel } = require('../model/instagramModel')
 
 function savePost (data) {
   return PostModel.findOneAndUpdate({
@@ -33,9 +33,8 @@ function getPost(postId) {
   return PostModel.findById(postId)
 }
 
-function addBrandToPost(post, brand, state) {
+function updatePostState(post, brand, state) {
   if (brand && brand._id) {
-    post.brandId = brand._id
     post.state = 'MAPPED'
   }
 
@@ -72,8 +71,6 @@ async function updateBrand(brand) {
   }, {
     ...brand,
     state: 'MAPPED'
-   }, {
-    upsert: true
   })
 }
 
@@ -82,7 +79,7 @@ module.exports = {
   schedule,
   remove,
   getPost,
-  addBrandToPost,
+  updatePostState,
   saveBrand,
   updateBrand
 }

@@ -28,7 +28,7 @@ const PostSchema = new mongoose.Schema({
   city: { type: String },
   source: { type: String },
   state: { type: String },
-  userId: { type: String },
+  brandId: { type: String },
 }, {
   timestamps: true
 });
