@@ -201,6 +201,9 @@ const Schema = new GraphQLSchema({
       brands: {
         type: new GraphQLList(brandType),
         args: {
+          _id: {
+            type: GraphQLString
+          },
           first: {
             type: GraphQLInt
           },
@@ -211,7 +214,7 @@ const Schema = new GraphQLSchema({
             type: GraphQLString
           },
         },
-        resolve: async (root, {first = 50, keyword, state }) => {
+        resolve: async (root, {_id, first = 50, keyword, state }) => {
           const query  = {}
 
           if (keyword) {
@@ -220,6 +223,10 @@ const Schema = new GraphQLSchema({
 
           if (state) {
             query.state = state
+          }
+
+          if (_id) {
+            query._id = _id
           }
 
           const items = await BrandModel.find(query).sort('-rank').limit(first)
