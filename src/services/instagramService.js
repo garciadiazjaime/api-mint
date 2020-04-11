@@ -36,6 +36,7 @@ function getPost(postId) {
 function updatePostState(post, brand, state) {
   if (brand && brand._id) {
     post.state = 'MAPPED'
+    post.brandId = brand.id
   }
 
   if (state) {
