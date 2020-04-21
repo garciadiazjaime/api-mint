@@ -69,10 +69,7 @@ async function updateBrand(brand) {
 
   return BrandModel.findOneAndUpdate({
     _id: brand._id
-  }, {
-    ...brand,
-    state: 'MAPPED'
-  })
+  }, brand)
 }
 
 module.exports = {
