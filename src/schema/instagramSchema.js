@@ -171,6 +171,9 @@ const Schema = new GraphQLSchema({
       posts: {
         type: new GraphQLList(PostType),
         args: {
+          _id: {
+            type: GraphQLString
+          },
           first: {
             type: GraphQLInt
           },
@@ -190,6 +193,10 @@ const Schema = new GraphQLSchema({
 
           if (state) {
             query.state = state
+          }
+
+          if (_id) {
+            query._id = _id
           }
 
           const items = await PostModel.find(query).sort('-likeCount').limit(first);
