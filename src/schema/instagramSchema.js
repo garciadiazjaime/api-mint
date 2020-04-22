@@ -229,7 +229,10 @@ const Schema = new GraphQLSchema({
             query._id = _id
           }
 
-          const items = await BrandModel.find(query).sort([['post.createdAt', -1], ['rank', -1]]).limit(first)
+          const items = await BrandModel.find(query).sort([
+            ['rank', -1],
+            ['post.createdAt', -1],
+          ]).limit(first)
 
           return items
         }

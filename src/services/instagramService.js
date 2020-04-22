@@ -36,7 +36,8 @@ function getPost(postId) {
 function updatePostState(post, brand, state) {
   if (brand && brand._id) {
     post.state = 'MAPPED'
-    post.brandId = brand.id
+  } else {
+    post.state = 'ERROR_NOID'
   }
 
   if (state) {
@@ -47,7 +48,7 @@ function updatePostState(post, brand, state) {
 }
 
 async function saveBrand(brand) {
-  if (!brand) {
+  if (!brand || brand.id) {
     return
   }
 
