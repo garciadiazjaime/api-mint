@@ -12,13 +12,13 @@ router.use('/instagram/graphiql', graphqlHTTP(() => ({
 })))
 
 router.post('/instagram/post', async (req, res) => {
-  const { data } = req.body
+  const { body: post } = req
 
-  if (!data || !data.length) {
+  if (!post || !post.id) {
     return res.send()
   }
 
-  const response = await Promise.all(data.map(savePost))
+  const response = await savePost(post)
 
   res.send(response)
 })

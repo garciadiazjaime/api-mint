@@ -6,13 +6,27 @@ const AddressSchema = new mongoose.Schema({
   city: { type: String },
   country: { type: String },
 })
+
 const LocationSchema = new mongoose.Schema({
-  id: { type:String, unique: true },
+  id: { type:String },
   name: {type: String },
   slug: {type: String },
   latitude: {type: String },
   longitude: {type: String },
   address: AddressSchema,
+})
+
+const MetaSchema = new mongoose.Schema({
+  options: { type: Array },
+  phones: { type: Array },
+  rank: { type: Number, default: 0 }
+})
+
+const UserSchema = new mongoose.Schema({
+  id: { type: String },
+  username: { type: String },
+  fullName: { type: String },
+  profilePicture: { type: String },
 })
 
 
@@ -28,35 +42,21 @@ const PostSchema = new mongoose.Schema({
   city: { type: String },
   source: { type: String },
   state: { type: String },
-  brandId: { type: String },
+
+  user: UserSchema,
+  location: LocationSchema,
+  meta: { type: MetaSchema },
 }, {
   timestamps: true
 });
 
 PostSchema.index({ caption: 'text' });
 
-
-const BrandSchema = new mongoose.Schema({
-  id: { type: String, unique: true },
-  username: { type: String },
-  fullName: { type: String },
-  profilePicture: { type: String },
-  post: PostSchema,
-  location: LocationSchema,
-  options: { type: Array },
-  phones: { type: Array },
-  rank: { type: Number, default: 0 },
-  state: { type: String },
-})
-
-BrandSchema.index({ username: 'text', fullName: 'text', 'post.caption': 'text' });
-
-
 const PostModel = mongoose.model('instagramPost', PostSchema);
-const BrandModel = mongoose.model('instagramBrand', BrandSchema);
+const LocationModel = mongoose.model('instagramLocation', LocationSchema);
 
 
 module.exports = {
   PostModel,
-  BrandModel,
+  LocationModel,
 }

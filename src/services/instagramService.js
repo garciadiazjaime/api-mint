@@ -3,12 +3,9 @@ const { PostModel, BrandModel } = require('../model/instagramModel')
 function savePost (data) {
   return PostModel.findOneAndUpdate({
     id: data.id
-  }, {
-    ...data,
-    state: 'CREATED'
-   }, {
-    new: true,
-    upsert: true
+  }, data, {
+    upsert: true,
+    returnNewDocument: true
   })
 }
 

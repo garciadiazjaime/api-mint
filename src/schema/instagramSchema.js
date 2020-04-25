@@ -6,7 +6,7 @@ const {
   GraphQLInt,
 } = require('graphql/type');
 
-const { PostModel, BrandModel } = require('../model/instagramModel');
+const { PostModel, LocationModel } = require('../model/instagramModel');
 
 const CustomChildrenType = new GraphQLObjectType({
   name: 'Children',
@@ -26,7 +26,7 @@ const CustomChildrenType = new GraphQLObjectType({
   }),
 });
 
-const brandType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'Brand',
   fields: () => ({
     _id: {
@@ -42,24 +42,6 @@ const brandType = new GraphQLObjectType({
       type: GraphQLString
     },
     profilePicture: {
-      type: GraphQLString
-    },
-    location: {
-      type: locationType
-    },
-    post: {
-      type: PostType
-    },
-    options: {
-      type: new GraphQLList(GraphQLString)
-    },
-    phones: {
-      type: new GraphQLList(GraphQLString)
-    },
-    rank: {
-      type: GraphQLInt
-    },
-    state: {
       type: GraphQLString
     },
   }),
@@ -113,6 +95,24 @@ const locationType = new GraphQLObjectType({
   }),
 });
 
+const metaType = new GraphQLObjectType({
+  name: 'Meta',
+  fields: () => ({
+    _id: {
+      type: GraphQLString
+    },
+    options: {
+      type: new GraphQLList(GraphQLString)
+    },
+    phones: {
+      type: new GraphQLList(GraphQLString)
+    },
+    rank: {
+      type: GraphQLInt
+    },
+  })
+})
+
 const PostType = new GraphQLObjectType({
   name: 'Post',
   fields: () => ({
@@ -152,8 +152,14 @@ const PostType = new GraphQLObjectType({
     state: {
       type: GraphQLString
     },
-    brandId: {
-      type: GraphQLString
+    user: {
+      type: userType
+    },
+    location: {
+      type: locationType
+    },
+    meta: {
+      type: metaType
     },
     createdAt: {
       type: GraphQLString
@@ -199,47 +205,44 @@ const Schema = new GraphQLSchema({
             query._id = _id
           }
 
-          const items = await PostModel.find(query).sort('-likeCount').limit(first);
+          const items = await PostModel.find(query).sort([
+            ['meta.rank', -1],
+            ['createdAt', -1],
+          ]).limit(first)
 
           return items
         },
       },
 
-      brands: {
-        type: new GraphQLList(brandType),
+      location: {
+        type: new GraphQLList(locationType),
         args: {
           _id: {
             type: GraphQLString
           },
-          first: {
-            type: GraphQLInt
-          },
-          keyword: {
+          id: {
             type: GraphQLString
           },
-          state: {
+          slug: {
             type: GraphQLString
           },
         },
-        resolve: async (root, {_id, first = 50, keyword, state }) => {
+        resolve: async (root, {_id, first = 1, id, slug }) => {
           const query  = {}
 
-          if (keyword) {
-            query['$text'] = { $search: keyword }
+          if (id) {
+            query.id = id
           }
 
-          if (state) {
-            query.state = state
+          if (slug) {
+            query.slug = slug
           }
 
           if (_id) {
             query._id = _id
           }
 
-          const items = await BrandModel.find(query).sort([
-            ['rank', -1],
-            ['post.createdAt', -1],
-          ]).limit(first)
+          const items = await LocationModel.find(query).limit(first)
 
           return items
         }
