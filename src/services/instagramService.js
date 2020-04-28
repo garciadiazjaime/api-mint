@@ -5,7 +5,7 @@ function savePost (data) {
     id: data.id
   }, data, {
     upsert: true,
-    returnNewDocument: true
+    new: true
   })
 }
 
