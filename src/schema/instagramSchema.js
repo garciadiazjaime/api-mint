@@ -190,7 +190,7 @@ const Schema = new GraphQLSchema({
             type: GraphQLString
           },
         },
-        resolve: async (root, {first = 50, keyword, state }) => {
+        resolve: async (root, {_id, first = 50, keyword, state }) => {
           const query = {}
 
           if (keyword) {
