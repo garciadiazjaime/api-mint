@@ -181,6 +181,9 @@ const Schema = new GraphQLSchema({
           _id: {
             type: GraphQLString
           },
+          id: {
+            type: GraphQLString
+          },
           first: {
             type: GraphQLInt
           },
@@ -194,7 +197,7 @@ const Schema = new GraphQLSchema({
             type: GraphQLBoolean
           }
         },
-        resolve: async (root, {_id, first = 50, keyword, state, published }) => {
+        resolve: async (root, {_id, id, first = 50, keyword, state, published }) => {
           const query = {}
 
           if (keyword) {
@@ -207,6 +210,10 @@ const Schema = new GraphQLSchema({
 
           if (_id) {
             query._id = _id
+          }
+
+          if (id) {
+            query.id = id
           }
 
           if (published === true || published === false) {
