@@ -18,4 +18,4 @@ By default server will run on http://localhost:3030
 
 
 - Print sorted items
-`items.forEach(item => console.log(new Date(item.post.createdAt), item.rank, item.id))`
+`items.forEach(item => console.log(new Date(item.createdAt), item.meta.rank, item.id))`

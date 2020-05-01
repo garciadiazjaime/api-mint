@@ -42,6 +42,7 @@ const PostSchema = new mongoose.Schema({
   city: { type: String },
   source: { type: String },
   state: { type: String },
+  published: { type: Boolean, default: false },
 
   user: UserSchema,
   location: LocationSchema,

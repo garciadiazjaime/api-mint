@@ -40,7 +40,7 @@ router.post('/instagram/post/:postId/brand', async (req, res) => {
 })
 
 router.post('/instagram/post/:postId/schedule', async (req, res) => {
-  const{ postId } = req.params
+  const { postId } = req.params
 
   const response = await schedule(postId)
 
@@ -48,7 +48,7 @@ router.post('/instagram/post/:postId/schedule', async (req, res) => {
 })
 
 router.post('/instagram/post/:postId/remove', async (req, res) => {
-  const{ postId } = req.params
+  const { postId } = req.params
 
   const response = await remove(postId)
 

@@ -4,6 +4,7 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
+  GraphQLBoolean,
 } = require('graphql/type');
 
 const { PostModel, LocationModel } = require('../model/instagramModel');
@@ -27,7 +28,7 @@ const CustomChildrenType = new GraphQLObjectType({
 });
 
 const userType = new GraphQLObjectType({
-  name: 'Brand',
+  name: 'User',
   fields: () => ({
     _id: {
       type: GraphQLString
@@ -189,8 +190,11 @@ const Schema = new GraphQLSchema({
           state: {
             type: GraphQLString
           },
+          published: {
+            type: GraphQLBoolean
+          }
         },
-        resolve: async (root, {_id, first = 50, keyword, state }) => {
+        resolve: async (root, {_id, first = 50, keyword, state, published }) => {
           const query = {}
 
           if (keyword) {
@@ -203,6 +207,10 @@ const Schema = new GraphQLSchema({
 
           if (_id) {
             query._id = _id
+          }
+
+          if (published === true || published === false) {
+            query.published = published
           }
 
           const items = await PostModel.find(query).sort([
