@@ -251,8 +251,11 @@ const Schema = new GraphQLSchema({
           slug: {
             type: GraphQLString
           },
+          state: {
+            type: GraphQLString
+          }
         },
-        resolve: async (root, {_id, first = 1, id, slug }) => {
+        resolve: async (root, {_id, first = 1, id, slug, state }) => {
           const query  = {}
 
           if (id) {
@@ -265,6 +268,10 @@ const Schema = new GraphQLSchema({
 
           if (_id) {
             query._id = _id
+          }
+
+          if (state) {
+            query.state = state
           }
 
           const items = await LocationModel.find(query).limit(first)
