@@ -92,7 +92,10 @@ const locationType = new GraphQLObjectType({
     },
     address: {
       type: addressType
-    }
+    },
+    state: {
+      type: GraphQLString
+    },
   }),
 });
 
@@ -195,9 +198,12 @@ const Schema = new GraphQLSchema({
           },
           published: {
             type: GraphQLBoolean
+          },
+          locationStatate: {
+            type: GraphQLString
           }
         },
-        resolve: async (root, {_id, id, first = 50, keyword, state, published }) => {
+        resolve: async (root, {_id, id, first = 50, keyword, state, published, locationStatate }) => {
           const query = {}
 
           if (keyword) {
@@ -218,6 +224,10 @@ const Schema = new GraphQLSchema({
 
           if (published === true || published === false) {
             query.published = published
+          }
+
+          if (locationStatate) {
+            query['location.state'] = locationStatate
           }
 
           const items = await PostModel.find(query).sort([

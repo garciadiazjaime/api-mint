@@ -11,8 +11,9 @@ const LocationSchema = new mongoose.Schema({
   id: { type:String },
   name: { type: String },
   slug: { type: String },
-  latitude: {type: String },
-  longitude: {type: String },
+  latitude: { type: String },
+  longitude: { type: String },
+  state: { type: String, default: 'RAW' },
   address: AddressSchema,
 })
 
@@ -41,7 +42,7 @@ const PostSchema = new mongoose.Schema({
   children: { type: Array },
   city: { type: String },
   source: { type: String },
-  state: { type: String },
+  state: { type: String, state: 'RAW' },
   published: { type: Boolean, default: false },
 
   user: UserSchema,
