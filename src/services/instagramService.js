@@ -1,7 +1,16 @@
-const { PostModel, BrandModel } = require('../model/instagramModel')
+const { PostModel, LocationModel, BrandModel } = require('../model/instagramModel')
 
 function savePost (data) {
   return PostModel.findOneAndUpdate({
+    id: data.id
+  }, data, {
+    upsert: true,
+    new: true
+  })
+}
+
+function saveLocation(data){
+  return LocationModel.findOneAndUpdate({
     id: data.id
   }, data, {
     upsert: true,
@@ -72,6 +81,7 @@ async function updateBrand(brand) {
 
 module.exports = {
   savePost,
+  saveLocation,
   schedule,
   remove,
   getPost,
