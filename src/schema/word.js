@@ -11,7 +11,7 @@ const {
 const WordModel = require('../model/word');
 
 const DefinitionType = new GraphQLObjectType({
-  name: 'DefintionType',
+  name: 'DefinitionType',
   fields: () => ({
     definition: {
       type: GraphQLString,
@@ -23,7 +23,7 @@ const DefinitionType = new GraphQLObjectType({
 })
 
 const DefinitionInput = new GraphQLInputObjectType({
-  name: 'DefintionInput',
+  name: 'DefinitionInput',
   fields: () => ({
     definition: {
       type: GraphQLString,
@@ -58,7 +58,7 @@ const TermType = new GraphQLObjectType({
 const query = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    Words: {
+    words: {
       type: new GraphQLList(TermType),
       args: {
         _id: {
