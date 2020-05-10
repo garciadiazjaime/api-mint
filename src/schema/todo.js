@@ -99,9 +99,30 @@ const MutationDelete = {
   }
 }
 
+const MutationUpdate = {
+  type: TodoType,
+  args: {
+    id: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    state: {
+      type: GraphQLBoolean,
+    },
+    todo: {
+      type: GraphQLString,
+    },
+  },
+  resolve: (root, args) => {
+    return TodoModel.update({
+      _id: args.id
+    }, args)
+  }
+}
+
 const mutation = {
   addTodo: MutationAdd,
   deleteTodo: MutationDelete,
+  updateTodo: MutationUpdate,
 }
 
 module.exports = {
