@@ -49,7 +49,7 @@ const query = {
     },
     resolve: async (root, {
       _id,
-      first = 50,
+      first = 100,
       state,
       todo
     }) => {
@@ -68,7 +68,7 @@ const query = {
         query.state = state
       }
 
-      const items = await TodoModel.find(query).limit(first);
+      const items = await TodoModel.find(query).sort({ createdAt:-1 }).limit(first);
 
       return items
     }
@@ -78,12 +78,23 @@ const query = {
 const MutationAdd = {
   type: TodoType,
   args: {
-    todo: {
-      type: new GraphQLNonNull(GraphQLString)
+    todos: {
+      type: new GraphQLNonNull(GraphQLList(GraphQLString))
     },
   },
-  resolve: (root, args) => {
-    return new TodoModel(args).save()
+  resolve: async (root, args) => {
+    const { todos } = args
+    if (!Array.isArray(todos) || !todos.length) {
+      return new Error('ERROR_TODOS')
+    }
+
+    const promises = todos.map(todo => new TodoModel(todo).save())
+
+    await Promise.all(promises)
+
+    return {
+      state: true
+    }
   }
 }
 
@@ -102,7 +113,7 @@ const MutationDelete = {
 const MutationUpdate = {
   type: TodoType,
   args: {
-    id: {
+    _id: {
       type: new GraphQLNonNull(GraphQLString),
     },
     state: {
@@ -114,13 +125,13 @@ const MutationUpdate = {
   },
   resolve: (root, args) => {
     return TodoModel.update({
-      _id: args.id
+      _id: args._id
     }, args)
   }
 }
 
 const mutation = {
-  addTodo: MutationAdd,
+  addTodos: MutationAdd,
   deleteTodo: MutationDelete,
   updateTodo: MutationUpdate,
 }
