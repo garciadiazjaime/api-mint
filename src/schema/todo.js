@@ -68,7 +68,7 @@ const query = {
         query.state = state
       }
 
-      const items = await TodoModel.find(query).sort({ createdAt:-1 }).limit(first);
+      const items = await TodoModel.find(query).limit(first);
 
       return items
     }
@@ -88,7 +88,7 @@ const MutationAdd = {
       return new Error('ERROR_TODOS')
     }
 
-    const promises = todos.map(todo => new TodoModel(todo).save())
+    const promises = todos.map(todo => new TodoModel({todo}).save())
 
     await Promise.all(promises)
 
