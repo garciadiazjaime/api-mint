@@ -11,11 +11,15 @@ const LocationSchema = new mongoose.Schema({
   id: { type:String },
   name: { type: String },
   slug: { type: String },
-  latitude: { type: String },
-  longitude: { type: String },
+  location: {
+    type: { type: String, default: "Point", },
+    coordinates: []
+  },
   state: { type: String, default: 'RAW' },
   address: AddressSchema,
 })
+
+LocationSchema.index({ location: "2dsphere" });
 
 const MetaSchema = new mongoose.Schema({
   options: { type: Array },

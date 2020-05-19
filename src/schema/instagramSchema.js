@@ -69,6 +69,18 @@ const addressType = new GraphQLObjectType({
   }),
 });
 
+const gpsType = new GraphQLObjectType({
+  name: 'GPS',
+  fields: () => ({
+    type: {
+      type: GraphQLString
+    },
+    coordinates: {
+      type: GraphQLList(GraphQLString)
+    },
+  }),
+});
+
 const locationType = new GraphQLObjectType({
   name: 'Location',
   fields: () => ({
@@ -84,11 +96,8 @@ const locationType = new GraphQLObjectType({
     slug: {
       type: GraphQLString
     },
-    latitude: {
-      type: GraphQLString
-    },
-    longitude: {
-      type: GraphQLString
+    location: {
+      type: gpsType
     },
     address: {
       type: addressType
