@@ -12,8 +12,8 @@ const LocationSchema = new mongoose.Schema({
   name: { type: String },
   slug: { type: String },
   location: {
-    type: { type: String, default: "Point", },
-    coordinates: []
+    type: { type: String },
+    coordinates: { type: [], default: undefined }
   },
   state: { type: String, default: 'RAW' },
   address: AddressSchema,

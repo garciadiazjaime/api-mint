@@ -4,6 +4,7 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLBoolean,
 } = require('graphql/type');
 
@@ -76,7 +77,7 @@ const gpsType = new GraphQLObjectType({
       type: GraphQLString
     },
     coordinates: {
-      type: GraphQLList(GraphQLString)
+      type: GraphQLList(GraphQLFloat)
     },
   }),
 });
