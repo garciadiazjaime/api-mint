@@ -60,9 +60,10 @@ PostSchema.index({ caption: 'text' });
 
 const PostModel = mongoose.model('instagramPost', PostSchema);
 const LocationModel = mongoose.model('instagramLocation', LocationSchema);
-
+const UserModel = mongoose.model('instagramUser', UserSchema)
 
 module.exports = {
   PostModel,
   LocationModel,
+  UserModel,
 }

@@ -209,11 +209,11 @@ const Schema = new GraphQLSchema({
           published: {
             type: GraphQLBoolean
           },
-          locationStatate: {
+          locationState: {
             type: GraphQLString
           }
         },
-        resolve: async (root, {_id, id, first = 50, keyword, state, published, locationStatate }) => {
+        resolve: async (root, {_id, id, first = 50, keyword, state, published, locationState }) => {
           const query = {}
 
           if (keyword) {
@@ -236,8 +236,8 @@ const Schema = new GraphQLSchema({
             query.published = published
           }
 
-          if (locationStatate) {
-            query['location.state'] = locationStatate
+          if (locationState) {
+            query['location.state'] = locationState
           }
 
           const items = await PostModel.find(query).sort([
