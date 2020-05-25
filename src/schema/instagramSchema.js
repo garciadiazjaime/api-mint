@@ -211,9 +211,12 @@ const Schema = new GraphQLSchema({
           },
           locationState: {
             type: GraphQLString
+          },
+          coordinates: {
+            type: GraphQLList(GraphQLFloat)
           }
         },
-        resolve: async (root, {_id, id, first = 50, keyword, state, published, locationState }) => {
+        resolve: async (root, {_id, id, first = 50, keyword, state, published, locationState, coordinates }) => {
           const query = {}
 
           if (keyword) {
@@ -238,6 +241,18 @@ const Schema = new GraphQLSchema({
 
           if (locationState) {
             query['location.state'] = locationState
+          }
+
+          if (Array.isArray(coordinates) && coordinates.length) {
+            query['location.location'] = {
+              $near: {
+                $maxDistance: 1000 * 100,
+                $geometry: {
+                  type: "Point",
+                  coordinates
+                }
+              }
+            }
           }
 
           const items = await PostModel.find(query).sort([
