@@ -219,6 +219,27 @@ const Schema = new GraphQLSchema({
         resolve: async (root, {_id, id, first = 50, keyword, state, published, locationState, coordinates }) => {
           const query = {}
 
+          if (Array.isArray(coordinates) && coordinates.length) {
+            const items = await PostModel.aggregate([
+              {
+                $geoNear: {
+                  near: {
+                    type: "Point",
+                    coordinates
+                  },
+                  distanceField: "dist.calculated",
+                  maxDistance: 1000 * 100,
+                  spherical: true
+                }
+              },
+              {
+                $limit: first
+              }
+            ])
+
+            return items
+          }
+
           if (keyword) {
             query['$text'] = { $search: keyword }
           }
@@ -241,18 +262,6 @@ const Schema = new GraphQLSchema({
 
           if (locationState) {
             query['location.state'] = locationState
-          }
-
-          if (Array.isArray(coordinates) && coordinates.length) {
-            query['location.location'] = {
-              $near: {
-                $maxDistance: 1000 * 100,
-                $geometry: {
-                  type: "Point",
-                  coordinates
-                }
-              }
-            }
           }
 
           const items = await PostModel.find(query).sort([
