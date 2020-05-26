@@ -127,6 +127,15 @@ const metaType = new GraphQLObjectType({
   })
 })
 
+const DistType = new GraphQLObjectType({
+  name: 'Dist',
+  fields: () => ({
+    calculated: {
+      type: GraphQLFloat
+    }
+  })
+})
+
 const PostType = new GraphQLObjectType({
   name: 'Post',
   fields: () => ({
@@ -180,6 +189,9 @@ const PostType = new GraphQLObjectType({
     },
     updatedAt: {
       type: GraphQLString
+    },
+    dist: {
+      type: DistType
     }
   }),
 });
@@ -220,7 +232,7 @@ const Schema = new GraphQLSchema({
           const query = {}
 
           if (Array.isArray(coordinates) && coordinates.length) {
-            const items = await PostModel.aggregate([
+            const filters = [
               {
                 $geoNear: {
                   near: {
@@ -235,7 +247,17 @@ const Schema = new GraphQLSchema({
               {
                 $limit: first
               }
-            ])
+            ]
+
+            if (state) {
+              filters.push({
+                $match: {
+                  state
+                }
+              })
+            }
+
+            const items = await PostModel.aggregate(filters)
 
             return items
           }
