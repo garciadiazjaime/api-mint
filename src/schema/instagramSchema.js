@@ -295,7 +295,7 @@ const Schema = new GraphQLSchema({
         },
       },
 
-      location: {
+      locations: {
         type: new GraphQLList(locationType),
         args: {
           _id: {
