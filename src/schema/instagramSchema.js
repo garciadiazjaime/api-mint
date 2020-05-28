@@ -309,10 +309,17 @@ const Schema = new GraphQLSchema({
           },
           state: {
             type: GraphQLString
+          },
+          first: {
+            type: GraphQLInt
           }
         },
-        resolve: async (root, {_id, first = 1, id, slug, state }) => {
+        resolve: async (root, { _id, id, slug, state, first = 1 }) => {
           const query  = {}
+
+          if (_id) {
+            query._id = _id
+          }
 
           if (id) {
             query.id = id
@@ -320,10 +327,6 @@ const Schema = new GraphQLSchema({
 
           if (slug) {
             query.slug = slug
-          }
-
-          if (_id) {
-            query._id = _id
           }
 
           if (state) {
