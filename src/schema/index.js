@@ -4,19 +4,22 @@ const {
 } = require('graphql/type');
 
 const { query: todoQuery, mutation: todoMutation } = require('./todo')
+const { query: portQuery, mutation: portMutation } = require('./port')
 
 
 const query = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    ...todoQuery
+    ...todoQuery,
+    ...portQuery,
   },
 })
 
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    ...todoMutation
+    ...todoMutation,
+    ...portMutation,
   }
 })
 
