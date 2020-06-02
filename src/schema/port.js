@@ -9,42 +9,49 @@ const {
 
 const PortModel = require('../model/port');
 
+const commonFields = {
+  portId: {
+    type: GraphQLInt,
+  },
+  city: {
+    type: GraphQLString,
+  },
+  name: {
+    type: GraphQLString,
+  },
+  portStatus: {
+    type: GraphQLString,
+  },
+  type: {
+    type: GraphQLInt,
+  },
+  entry: {
+    type: GraphQLInt,
+  },
+  updateTime: {
+    type: GraphQLString,
+  },
+  status: {
+    type: GraphQLString,
+  },
+  delay: {
+    type: GraphQLInt,
+  },
+  lanes: {
+    type: GraphQLInt,
+  },
+  uuid: {
+    type: GraphQLString
+  },
+}
+
 const PortType = new GraphQLObjectType({
   name: 'Port',
   fields: () => ({
     _id: {
       type: GraphQLString,
     },
-    portId: {
-      type: GraphQLString,
-    },
-    city: {
-      type: GraphQLString,
-    },
-    name: {
-      type: GraphQLString,
-    },
-    portStatus: {
-      type: GraphQLString,
-    },
-    type: {
-      type: GraphQLString,
-    },
-    entry: {
-      type: GraphQLString,
-    },
-    updateTime: {
-      type: GraphQLString,
-    },
-    status: {
-      type: GraphQLString,
-    },
-    delay: {
-      type: GraphQLInt,
-    },
-    lanes: {
-      type: GraphQLInt,
-    },
+    ...commonFields,
     createdAt: {
       type: GraphQLString
     },
@@ -67,6 +74,9 @@ const query = {
       city: {
         type: GraphQLString
       },
+      uuid: {
+        type: GraphQLString
+      }
     },
     resolve: async (root, {
       _id,
@@ -82,6 +92,10 @@ const query = {
         query.city = city
       }
 
+      if (uuid) {
+        query.uuid = uuid
+      }
+
       const items = await PortModel.find(query).limit(first);
 
       return items
@@ -92,36 +106,7 @@ const query = {
 const PortInput = new GraphQLInputObjectType({
   name: 'PortInput',
   fields: () => ({
-    portId: {
-      type: GraphQLString,
-    },
-    city: {
-      type: GraphQLString,
-    },
-    name: {
-      type: GraphQLString,
-    },
-    portStatus: {
-      type: GraphQLString,
-    },
-    type: {
-      type: GraphQLString,
-    },
-    entry: {
-      type: GraphQLString,
-    },
-    updateTime: {
-      type: GraphQLString,
-    },
-    status: {
-      type: GraphQLString,
-    },
-    delay: {
-      type: GraphQLInt,
-    },
-    lanes: {
-      type: GraphQLInt,
-    },
+    ...commonFields
   }),
 })
 
