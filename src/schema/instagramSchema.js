@@ -8,7 +8,8 @@ const {
   GraphQLBoolean,
 } = require('graphql/type');
 
-const { PostModel, LocationModel } = require('../model/instagramModel');
+const { LocationModel } = require('../model/instagramModel');
+const { getPosts } = require('../util/instagram')
 
 const CustomChildrenType = new GraphQLObjectType({
   name: 'Children',
@@ -228,71 +229,8 @@ const Schema = new GraphQLSchema({
             type: GraphQLList(GraphQLFloat)
           }
         },
-        resolve: async (root, {_id, id, first = 50, keyword, state, published, locationState, coordinates }) => {
-          const query = {}
-
-          if (Array.isArray(coordinates) && coordinates.length) {
-            const filters = [
-              {
-                $geoNear: {
-                  near: {
-                    type: "Point",
-                    coordinates
-                  },
-                  distanceField: "dist.calculated",
-                  maxDistance: 1000 * 100,
-                  spherical: true
-                }
-              },
-              {
-                $limit: first
-              }
-            ]
-
-            if (state) {
-              filters.push({
-                $match: {
-                  state
-                }
-              })
-            }
-
-            const items = await PostModel.aggregate(filters)
-
-            return items
-          }
-
-          if (keyword) {
-            query['$text'] = { $search: keyword }
-          }
-
-          if (state) {
-            query.state = state
-          }
-
-          if (_id) {
-            query._id = _id
-          }
-
-          if (id) {
-            query.id = id
-          }
-
-          if (published === true || published === false) {
-            query.published = published
-          }
-
-          if (locationState) {
-            query['location.state'] = locationState
-          }
-
-          const items = await PostModel.find(query).sort([
-            ['meta.rank', -1],
-            ['createdAt', -1],
-          ]).limit(first)
-
-          return items
-        },
+        resolve: (root, {_id, id, first = 50, keyword, state, published, locationState, coordinates }) =>
+          getPosts({_id, id, first, keyword, state, published, locationState, coordinates}),
       },
 
       locations: {
