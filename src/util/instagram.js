@@ -79,7 +79,7 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
   return PostModel.aggregate(filters)
 }
 
-function getQueryForPosts({ _id, id, keyword, state, published, locationState }) {
+function getQueryForPosts({ _id, id, keyword, state, published, locationState, since }) {
   const query = {}
 
   if (keyword) {
@@ -104,6 +104,12 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState })
 
   if (locationState) {
     query['location.state'] = locationState
+  }
+
+  if (since) {
+    query.createdAt = {
+      $gte: new Date(since)
+    }
   }
 
   return query
@@ -149,8 +155,8 @@ function mergePostsByLocationAndScore(postsByLocation, postsByScore, first) {
   }, items)
 }
 
-function getPostByScore({ _id, id, first, keyword, state, published, locationState }) {
-  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState })
+function getPostByScore({ _id, id, first, keyword, state, published, locationState, since }) {
+  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since })
 
   return PostModel.find(query).sort([
     ['meta.rank', -1],
@@ -159,7 +165,7 @@ function getPostByScore({ _id, id, first, keyword, state, published, locationSta
 }
 
 
-async function getPosts({_id, id, first, keyword, state, published, locationState, coordinates}) {
+async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since }) {
   if (Array.isArray(coordinates) && coordinates.length) {
     const postsByLocation = await getPostsByLocationAndUser({ coordinates, state, first })
 
@@ -171,7 +177,7 @@ async function getPosts({_id, id, first, keyword, state, published, locationStat
   }
 
 
-  return getPostByScore({ _id, id, first, keyword, state, published, locationState })
+  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since })
 }
 
 module.exports = {
