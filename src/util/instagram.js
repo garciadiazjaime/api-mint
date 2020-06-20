@@ -79,7 +79,7 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
   return PostModel.aggregate(filters)
 }
 
-function getQueryForPosts({ _id, id, keyword, state, published, locationState, since }) {
+function getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to }) {
   const query = {}
 
   if (keyword) {
@@ -106,9 +106,18 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
     query['location.state'] = locationState
   }
 
-  if (since) {
+  if (since && to) {
+    query.createdAt = {
+      $gte: new Date(since),
+      $lte: new Date(to)
+    }
+  } else if (since) {
     query.createdAt = {
       $gte: new Date(since)
+    }
+  } else if (to) {
+    query.createdAt = {
+      $lte: new Date(to)
     }
   }
 
@@ -155,8 +164,8 @@ function mergePostsByLocationAndScore(postsByLocation, postsByScore, first) {
   }, items)
 }
 
-function getPostByScore({ _id, id, first, keyword, state, published, locationState, since }) {
-  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since })
+function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to }) {
+  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to })
 
   return PostModel.find(query).sort([
     ['meta.rank', -1],
@@ -165,7 +174,7 @@ function getPostByScore({ _id, id, first, keyword, state, published, locationSta
 }
 
 
-async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since }) {
+async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to }) {
   if (Array.isArray(coordinates) && coordinates.length) {
     const postsByLocation = await getPostsByLocationAndUser({ coordinates, state, first })
 
@@ -177,7 +186,7 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   }
 
 
-  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since })
+  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to })
 }
 
 module.exports = {

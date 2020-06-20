@@ -230,10 +230,13 @@ const Schema = new GraphQLSchema({
           },
           since: {
             type: GraphQLString
+          },
+          to: {
+            type: GraphQLString
           }
         },
-        resolve: (root, {_id, id, first = 50, keyword, state, published, locationState, coordinates, since }) =>
-          getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since }),
+        resolve: (root, {_id, id, first = 50, keyword, state, published, locationState, coordinates, since, to }) =>
+          getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to }),
       },
 
       locations: {
