@@ -178,11 +178,7 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   if (Array.isArray(coordinates) && coordinates.length) {
     const postsByLocation = await getPostsByLocationAndUser({ coordinates, state, first })
 
-    const postsByScore = await getPostByScoreAndUser({ _id, id, first, keyword, state, published, locationState})
-
-    const items = await mergePostsByLocationAndScore(postsByLocation, postsByScore, first)
-
-    return items
+    return postsByLocation
   }
 
 
