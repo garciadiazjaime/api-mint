@@ -76,12 +76,33 @@ const query = {
       },
       uuid: {
         type: GraphQLString
+      },
+      name: {
+        type: GraphQLString
+      },
+      type: {
+        type: GraphQLInt
+      },
+      entry: {
+        type: GraphQLInt,
+      },
+      since: {
+        type: GraphQLString
+      },
+      to: {
+        type: GraphQLString
       }
     },
     resolve: async (root, {
       _id,
       first = 1,
       city,
+      uuid,
+      name,
+      type,
+      entry,
+      since,
+      to
     }) => {
       const query = {}
       if (_id) {
@@ -96,7 +117,34 @@ const query = {
         query.uuid = uuid
       }
 
-      const items = await PortModel.find(query).limit(first);
+      if (name) {
+        query.name = name
+      }
+
+      if (type) {
+        query.type = type
+      }
+
+      if (entry) {
+        query.entry = entry
+      }
+
+      if (since && to) {
+        query.createdAt = {
+          $gte: new Date(since),
+          $lte: new Date(to)
+        }
+      } else if (since) {
+        query.createdAt = {
+          $gte: new Date(since)
+        }
+      } else if (to) {
+        query.createdAt = {
+          $lte: new Date(to)
+        }
+      }
+
+      const items = await PortModel.find(query).sort({createdAt: -1}).limit(first);
 
       return items
     }
