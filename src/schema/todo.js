@@ -1,5 +1,6 @@
 const {
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLString,
   GraphQLBoolean,
   GraphQLList,
@@ -8,6 +9,19 @@ const {
 } = require('graphql/type');
 
 const TodoModel = require('../model/todo');
+
+const TodoInput = new GraphQLInputObjectType({
+  name: 'TodoInput',
+  fields: () => ({
+    todo: {
+      type: GraphQLString,
+    },
+    position: {
+      type: GraphQLInt,
+    }
+  })
+})
+
 
 const TodoType = new GraphQLObjectType({
   name: 'Todo',
@@ -20,6 +34,9 @@ const TodoType = new GraphQLObjectType({
     },
     state: {
       type: GraphQLBoolean,
+    },
+    position: {
+      type: GraphQLInt
     },
     createdAt: {
       type: GraphQLString
@@ -49,7 +66,7 @@ const query = {
     },
     resolve: async (root, {
       _id,
-      first = 100,
+      first = 500,
       state,
       todo
     }) => {
@@ -68,7 +85,7 @@ const query = {
         query.state = state
       }
 
-      const items = await TodoModel.find(query).limit(first);
+      const items = await TodoModel.find(query).sort({position: 1}).limit(first);
 
       return items
     }
@@ -79,7 +96,7 @@ const MutationAdd = {
   type: TodoType,
   args: {
     todos: {
-      type: new GraphQLNonNull(GraphQLList(GraphQLString))
+      type: new GraphQLNonNull(GraphQLList(TodoInput))
     },
   },
   resolve: async (root, args) => {
@@ -88,7 +105,12 @@ const MutationAdd = {
       return new Error('ERROR_TODOS')
     }
 
-    const promises = todos.map(todo => new TodoModel({todo}).save())
+    const maxPosition = await TodoModel.findOne().sort({position: -1})
+
+    const promises = todos.map(item => new TodoModel({
+      todo: item.todo,
+      position: item.position + (maxPosition && maxPosition.position || 0)
+    }).save())
 
     await Promise.all(promises)
 
