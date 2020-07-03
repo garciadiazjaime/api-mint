@@ -85,7 +85,7 @@ const query = {
         query.state = state
       }
 
-      const items = await TodoModel.find(query).sort({position: 1}).limit(first);
+      const items = await TodoModel.find(query).sort({state: 1, position: 1}).limit(first);
 
       return items
     }
