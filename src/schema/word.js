@@ -103,6 +103,9 @@ const MutationAdd = {
     },
     definitions: {
       type: new GraphQLNonNull(GraphQLList(DefinitionInput))
+    },
+    lang: {
+      type: new GraphQLNonNull(GraphQLString)
     }
   },
   resolve: (root, args) => {

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const WordSchema = new mongoose.Schema({
   term: { type: String, unique: true },
   definitions: { type: Array },
+  lang: { type: String }
 }, {
   timestamps: true
 });
