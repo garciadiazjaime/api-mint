@@ -5,6 +5,7 @@ const {
 
 const { query: todoQuery, mutation: todoMutation } = require('./todo')
 const { query: portQuery, mutation: portMutation } = require('./port')
+const { query: realStateQuery, mutation: realStateMutation } = require('./realState')
 
 
 const query = new GraphQLObjectType({
@@ -12,6 +13,7 @@ const query = new GraphQLObjectType({
   fields: {
     ...todoQuery,
     ...portQuery,
+    ...realStateQuery
   },
 })
 
@@ -20,6 +22,7 @@ const mutation = new GraphQLObjectType({
   fields: {
     ...todoMutation,
     ...portMutation,
+    ...realStateMutation
   }
 })
 
