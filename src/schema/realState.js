@@ -9,7 +9,7 @@ const {
 } = require('graphql/type');
 
 const RealStateModel = require('../model/realStateModel');
-const { gpsType } = require('./shared')
+const { getGpsType } = require('./shared')
 
 const commonFields = {
   price: {
@@ -46,7 +46,7 @@ const RealStateType = new GraphQLObjectType({
     },
     ...commonFields,
     location: {
-      type: gpsType
+      type: getGpsType('RealState')
     },
     createdAt: {
       type: GraphQLString

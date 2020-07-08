@@ -1,15 +1,9 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 
-const instagramSchema = require('../schema/instagramSchema')
 const { savePost, saveLocation, saveUser, schedule, remove, getPost, saveBrand, updateBrand, updatePostState } = require('../services/instagramService')
 
 const router = express.Router()
-
-router.use('/instagram/graphiql', graphqlHTTP(() => ({
-  schema: instagramSchema,
-  graphiql: true,
-})))
 
 router.post('/instagram/post', async (req, res) => {
   const { body: post } = req

@@ -79,7 +79,7 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
   return PostModel.aggregate(filters)
 }
 
-function getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to }) {
+function getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck }) {
   const query = {}
 
   if (keyword) {
@@ -118,6 +118,12 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   } else if (to) {
     query.createdAt = {
       $lte: new Date(to)
+    }
+  }
+
+  if (lastCheck) {
+    query.lastCheck = {
+      $lte: new Date(lastCheck),
     }
   }
 
@@ -164,8 +170,8 @@ function mergePostsByLocationAndScore(postsByLocation, postsByScore, first) {
   }, items)
 }
 
-function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to }) {
-  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to })
+function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck }) {
+  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck })
 
   return PostModel.find(query).sort([
     ['meta.rank', -1],
@@ -174,7 +180,7 @@ function getPostByScore({ _id, id, first, keyword, state, published, locationSta
 }
 
 
-async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to }) {
+async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to, lastCheck }) {
   if (Array.isArray(coordinates) && coordinates.length) {
     const postsByLocation = await getPostsByLocationAndUser({ coordinates, state, first })
 
@@ -182,7 +188,7 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   }
 
 
-  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to })
+  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck })
 }
 
 module.exports = {

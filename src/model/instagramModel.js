@@ -46,8 +46,9 @@ const PostSchema = new mongoose.Schema({
   children: { type: Array },
   city: { type: String },
   source: { type: String },
-  state: { type: String, state: 'RAW' },
+  state: { type: String, state: 'RAW' }, // [RAW, MAPPED, DELETED, BLOCKED]
   published: { type: Boolean, default: false },
+  lastCheck: { type: Date },
 
   user: UserSchema,
   location: LocationSchema,
