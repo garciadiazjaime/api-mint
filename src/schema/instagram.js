@@ -144,10 +144,10 @@ function getPostCommonFields(type) {
       type: GraphQLString
     },
     likeCount: {
-      type: GraphQLString
+      type: GraphQLInt
     },
     children: {
-      type: getChildrenType(type)
+      type: new GraphQLList(getChildrenType(type))
     },
     city: {
       type: GraphQLString
@@ -321,43 +321,44 @@ const query = {
   }
 }
 
-const MutationAddPostBulkType = new GraphQLObjectType({
-  name: 'MutationAddPostBulkType',
+const MutationAddPostType = new GraphQLObjectType({
+  name: 'MutationAddPostType',
   fields: () => ({
-    _id: {
+    id: {
       type: GraphQLString
     },
   })
 })
 
-const MutationAddPostBulk = {
-  type: MutationAddPostBulkType,
+const MutationAddPost = {
+  type: MutationAddPostType,
   args: {
     data: {
-      type: new GraphQLNonNull(GraphQLList(getPostType('Input')))
-    },
+      type: new GraphQLNonNull(getPostType('Input'))
+    }
   },
   resolve: async (root, args) => {
-    const {
-      data
-    } = args
-
-    if (!Array.isArray(data) || !report.data) {
+    const { data } = args
+    console.log(JSON.stringify(data, null, 2))
+    if (!data) {
       return new Error('ERROR_DATA')
     }
 
-    const promises = data.map(item => new PostModel(item).save())
-
-    await Promise.all(promises)
+    const response = await PostModel.findOneAndUpdate({
+      id: data.id
+    }, data, {
+      upsert: true,
+      new: true
+    })
 
     return {
-      _id: 'success'
+      id: response.id
     }
   }
 }
 
 const mutation = {
-  addPostBulk: MutationAddPostBulk,
+  createInstagramPost: MutationAddPost,
 }
 
 module.exports = {
