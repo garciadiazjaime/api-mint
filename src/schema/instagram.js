@@ -85,7 +85,7 @@ function getMetaType(type) {
 }
 
 function getCommonLocationFields(type) {
-  return {
+  const defaultFields = { 
     id: {
       type: GraphQLString
     },
@@ -104,6 +104,17 @@ function getCommonLocationFields(type) {
     state: {
       type: GraphQLString
     }
+  }
+
+  if (type.includes('Input') && type !== 'LocationPostInput') {
+    return defaultFields
+  }
+
+  return {
+    ...defaultFields,
+    _id: {
+      type: GraphQLString,
+    },
   }
 }
 
