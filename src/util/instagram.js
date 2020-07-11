@@ -122,9 +122,7 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   }
 
   if (lastCheck) {
-    query.lastCheck = {
-      $lte: new Date(lastCheck),
-    }
+    query.$or = [{lastCheck: {$exists: 0}}, {lastCheck: {$lte: new Date(lastCheck)}}]
   }
 
   return query

@@ -350,7 +350,6 @@ const MutationAddPost = {
   },
   resolve: async (root, args) => {
     const { data } = args
-    console.log(JSON.stringify(data, null, 2))
     if (!data) {
       return new Error('ERROR_DATA')
     }
