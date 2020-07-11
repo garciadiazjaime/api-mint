@@ -17,6 +17,8 @@ const LocationSchema = new mongoose.Schema({
   },
   state: { type: String, default: 'RAW' },
   address: AddressSchema,
+}, {
+  timestamps: true
 })
 
 LocationSchema.index({ location: "2dsphere" });
@@ -32,6 +34,8 @@ const UserSchema = new mongoose.Schema({
   username: { type: String },
   fullName: { type: String },
   profilePicture: { type: String },
+}, {
+  timestamps: true
 })
 
 

@@ -10,7 +10,8 @@ const {
 
 const {
   PostModel,
-  LocationModel
+  LocationModel,
+  UserModel
 } = require('../model/instagramModel');
 const {
   getPosts
@@ -115,6 +116,12 @@ function getCommonLocationFields(type) {
     _id: {
       type: GraphQLString,
     },
+    createdAt: {
+      type: GraphQLString
+    },
+    updatedAt: {
+      type: GraphQLString
+    },
   }
 }
 
@@ -214,6 +221,46 @@ function getPostType(type) {
   return getType(name, fields)
 }
 
+function getCommonUserFields(type) {
+  const defaultFields = { 
+    id: {
+      type: GraphQLString
+    },
+    username: {
+      type: GraphQLString
+    },
+    fullName: {
+      type: GraphQLString
+    },
+    profilePicture: {
+      type: GraphQLString
+    },
+  }
+
+  if (type.includes('Input')) {
+    return defaultFields
+  }
+
+  return {
+    ...defaultFields,
+    _id: {
+      type: GraphQLString,
+    },
+    createdAt: {
+      type: GraphQLString
+    },
+    updatedAt: {
+      type: GraphQLString
+    },
+  }
+}
+
+function getUserType(type) {
+  const name = `User${type}`
+  const fields = () => (getCommonUserFields(name))
+
+  return getType(name, fields)
+}
 
 const query = {
   posts: {
@@ -282,7 +329,7 @@ const query = {
   },
 
   locations: {
-    type: getLocationType('Query'),
+    type: new GraphQLList(getLocationType('Query')),
     args: {
       _id: {
         type: GraphQLString
@@ -329,46 +376,93 @@ const query = {
 
       return items
     }
-  }
-}
-
-const MutationAddPostType = new GraphQLObjectType({
-  name: 'MutationAddPostType',
-  fields: () => ({
-    id: {
-      type: GraphQLString
-    },
-  })
-})
-
-const MutationAddPost = {
-  type: MutationAddPostType,
-  args: {
-    data: {
-      type: new GraphQLNonNull(getPostType('Input'))
-    }
   },
-  resolve: async (root, args) => {
-    const { data } = args
-    if (!data) {
-      return new Error('ERROR_DATA')
-    }
 
-    const response = await PostModel.findOneAndUpdate({
-      id: data.id
-    }, data, {
-      upsert: true,
-      new: true
-    })
+  users: {
+    type: new GraphQLList(getUserType('Query')),
+    args: {
+      _id: {
+        type: GraphQLString
+      },
+      id: {
+        type: GraphQLString
+      },
+      username: {
+        type: GraphQLString
+      },
+      fullName: {
+        type: GraphQLString
+      },
+      profilePicture: {
+        type: GraphQLString
+      }
+    },
+    resolve: async (root, {
+      _id,
+      id,
+      first = 1
+    }) => {
+      const query = {}
 
-    return {
-      id: response.id
+      if (_id) {
+        query._id = _id
+      }
+
+      if (id) {
+        query.id = id
+      }
+
+      const items = await UserModel.find(query).limit(first)
+
+      return items
     }
   }
 }
+
+function getMutationAddType(type) {
+  return new GraphQLObjectType({
+    name: `MutationAdd${type}Type`,
+    fields: () => ({
+      id: {
+        type: GraphQLString
+      },
+    })
+  })
+}
+
+function getMutation(type, inputGetter, Model) {
+  return {
+    type: getMutationAddType(type),
+    args: {
+      data: {
+        type: new GraphQLNonNull(inputGetter)
+      }
+    },
+    resolve: async (root, args) => {
+      const { data } = args
+      if (!data) {
+        return new Error('ERROR_DATA')
+      }
+  
+      const response = await Model.findOneAndUpdate({
+        id: data.id
+      }, data, {
+        upsert: true,
+        new: true
+      })
+  
+      return {
+        id: response.id
+      }
+    }
+  }
+}
+
 
 const mutation = {
-  createInstagramPost: MutationAddPost,
+  createInstagramPost: getMutation('InstagramPost', getPostType('Input'), PostModel),
+  createInstagramLocation: getMutation('InstagramLocation', getLocationType('Input'), LocationModel),
+  createInstagramUser: getMutation('InstragramUser', getUserType('Input'), UserModel),
 }
 
 module.exports = {
