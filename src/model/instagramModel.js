@@ -52,7 +52,8 @@ const PostSchema = new mongoose.Schema({
   source: { type: String },
   state: { type: String, state: 'MAPPED' }, // [MAPPED, DELETED, BLOCKED]
   published: { type: Boolean, default: false },
-  lastCheck: { type: Date },
+  lastCheck: { type: Date }, // delete check
+  postUpdate: { type: Date }, // update image
 
   user: UserSchema,
   location: LocationSchema,
