@@ -126,7 +126,7 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   }
 
   if (postUpdate) {
-    query.$or = [{postUpdate: {$exists: 0}}, {postUpdate: {$lte: new Date(postUpdate)}}]
+    query.$or = [{postUpdate: {$exists: 0}}, {postUpdate: {$lte: new Date(postUpdate)}}, {mediaUrl: null}]
   }
 
   return query
