@@ -55,6 +55,11 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
         spherical: true
       }
     },
+    state ? {
+      $match: {
+        state
+      }
+    } : {},
     {
       $group: {
         ...fieldsByDefault
@@ -67,14 +72,6 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
       $sort : { 'meta.rank': -1, 'createdAt': -1 }
     }
   ]
-
-  if (state) {
-    filters.push({
-      $match: {
-        state
-      }
-    })
-  }
 
   return PostModel.aggregate(filters)
 }
