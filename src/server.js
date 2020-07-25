@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ extended: true, limit: '1mb' }))
 app.use(morgan('tiny'))
 
-
 openDatabase(props.dbUrl)
   .then(() => {
     app.use('/', apiNewsRoute)

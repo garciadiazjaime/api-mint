@@ -10,7 +10,7 @@ const config = convict({
   },
   ip: {
     doc: 'The IP address to bind.',
-    format: 'ipaddress',
+    format: '*',
     default: '0.0.0.0',
     env: 'IP'
   },
