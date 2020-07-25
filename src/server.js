@@ -5,7 +5,6 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const apiNewsRoute  = require('mint-api-news').default
-const apiEventsRoute  = require('mint-api-events').default
 const cors = require('cors')
 const debug = require('debug')('app:server')
 
@@ -35,7 +34,6 @@ app.use(morgan('tiny'))
 openDatabase(props.dbUrl)
   .then(() => {
     app.use('/', apiNewsRoute)
-    app.use('/', apiEventsRoute)
     app.use('/', apiEmailRoute)
     app.use('/', apiTwitterRoute)
     app.use('/', apiCaptionRoute)

@@ -13,23 +13,22 @@
     "deploy": "npm run docker:build && npm run docker:push"
   },
   "dependencies": {
-    "@sendgrid/mail": "^6.2.1",
-    "body-parser": "^1.18.2",
-    "convict": "^4.0.2",
+    "@sendgrid/mail": "^6.5.5",
+    "body-parser": "^1.19.0",
+    "convict": "^6.0.0",
     "cors": "^2.8.4",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
-    "graphql": "^14.4.2",
-    "mint-api-events": "^1.0.1",
+    "graphql": "^14.7.0",
     "mint-api-news": "^1.0.20",
-    "mongoose": "^5.0.0-rc2",
-    "morgan": "^1.9.0",
-    "newrelic": "^6.7.1",
+    "mongoose": "^5.9.25",
+    "morgan": "^1.10.0",
+    "newrelic": "^6.11.0",
     "redis": "^2.8.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.4"
   }
 }

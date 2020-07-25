@@ -1,9 +1,6 @@
 const express = require('express')
-const Twitter = require('twitter')
 
-const EventModel = require('../model/emailModel')
 const { getTweets } = require('../services/twitterService')
-const config = require('../config')
 
 const router = express.Router()
 
