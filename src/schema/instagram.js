@@ -42,29 +42,6 @@ function getChildrenType(type) {
   return getType(name, fields)
 }
 
-function getUserType(type) {
-  const name = `User${type}`
-  const fields = () => ({
-    _id: {
-      type: GraphQLString
-    },
-    id: {
-      type: GraphQLString
-    },
-    username: {
-      type: GraphQLString
-    },
-    fullName: {
-      type: GraphQLString
-    },
-    profilePicture: {
-      type: GraphQLString
-    },
-  })
-  
-  return getType(name, fields)
-}
-
 function getMetaType(type) {
   const name = `Meta${type}`
   const fields = () => ({

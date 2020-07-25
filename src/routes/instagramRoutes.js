@@ -1,5 +1,4 @@
 const express = require('express')
-const graphqlHTTP = require('express-graphql')
 
 const { savePost, saveLocation, saveUser, schedule, remove, getPost, saveBrand, updateBrand, updatePostState } = require('../services/instagramService')
 

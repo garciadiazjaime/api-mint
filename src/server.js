@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') { // eslint-disable-line
   require('newrelic');
 }
 const express = require('express')

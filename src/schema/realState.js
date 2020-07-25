@@ -131,7 +131,6 @@ const query = {
       },
     },
     resolve: async (root, {
-      _id,
       first = 50,
       city,
       minPrice,

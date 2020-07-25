@@ -129,46 +129,6 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   return query
 }
 
-function getPostByScoreAndUser({ _id, id, first, keyword, state, published, locationState}) {
-  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState })
-
-  const filters = [
-    {
-      $group: {
-        ...fieldsByDefault
-      }
-    },
-    {
-      $match: query
-    },
-    {
-      $limit: first
-    },
-    {
-      $sort : { 'meta.rank': -1, 'createdAt': -1 }
-    }
-  ]
-
-  return PostModel.aggregate(filters)
-}
-
-function mergePostsByLocationAndScore(postsByLocation, postsByScore, first) {
-  const items = [...postsByLocation]
-  const postsByLocationIds = {}
-
-  postsByLocation.forEach(item => {
-    postsByLocationIds[item._id] = true
-  })
-
-  return postsByScore.reduce((accu, item) => {
-    if (accu.length < first && !postsByLocationIds[items._id]) {
-      accu.push(item)
-    }
-
-    return accu
-  }, items)
-}
-
 function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate }) {
   const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate })
 
