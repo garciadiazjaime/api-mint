@@ -7,6 +7,7 @@ const { query: todoQuery, mutation: todoMutation } = require('./todo')
 const { query: portQuery, mutation: portMutation } = require('./port')
 const { query: realStateQuery, mutation: realStateMutation } = require('./realState')
 const { query: instagramPostQuery, mutation: instagramPostMutation } = require('./instagram')
+const { query: gobmxnQuery, mutation: gobmxnMutation } = require('./gobmxn')
 
 
 const query = new GraphQLObjectType({
@@ -15,7 +16,8 @@ const query = new GraphQLObjectType({
     ...todoQuery,
     ...portQuery,
     ...realStateQuery,
-    ...instagramPostQuery
+    ...instagramPostQuery,
+    ...gobmxnQuery,
   },
 })
 
@@ -25,7 +27,8 @@ const mutation = new GraphQLObjectType({
     ...todoMutation,
     ...portMutation,
     ...realStateMutation,
-    ...instagramPostMutation
+    ...instagramPostMutation,
+    ...gobmxnMutation,
   }
 })
 
