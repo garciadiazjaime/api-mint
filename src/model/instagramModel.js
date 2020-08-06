@@ -54,6 +54,7 @@ const PostSchema = new mongoose.Schema({
   published: { type: Boolean, default: false },
   lastCheck: { type: Date }, // delete check
   postUpdate: { type: Date }, // update image
+  hasLocation: { type: Boolean }, // helps to add location when post does not have one
 
   user: UserSchema,
   location: LocationSchema,

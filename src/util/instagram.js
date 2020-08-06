@@ -76,7 +76,7 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
   return PostModel.aggregate(filters)
 }
 
-function getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate }) {
+function getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, userId }) {
   const query = {}
 
   if (keyword) {
@@ -126,11 +126,19 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
     query.$or = [{postUpdate: {$exists: 0}}, {postUpdate: {$lte: new Date(postUpdate)}}, {mediaUrl: null}]
   }
 
+  if (hasLocation) {
+    query.$and = [ {hasLocation: {$exists: 0}}, {'location.location.coordinates': { $exists: 0}} ]
+  }
+
+  if (userId) {
+    query.$and = [ {'user.id': userId}, {'location.location.coordinates': { $exists: 1}} ]
+  }
+
   return query
 }
 
-function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate }) {
-  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate })
+function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, userId }) {
+  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, userId })
 
   return PostModel.find(query).sort([
     ['meta.rank', -1],
@@ -139,7 +147,7 @@ function getPostByScore({ _id, id, first, keyword, state, published, locationSta
 }
 
 
-async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to, lastCheck, postUpdate }) {
+async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to, lastCheck, postUpdate, hasLocation, userId }) {
   if (Array.isArray(coordinates) && coordinates.length) {
     const postsByLocation = await getPostsByLocationAndUser({ coordinates, state, first })
 
@@ -147,7 +155,7 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   }
 
 
-  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate })
+  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, userId })
 }
 
 module.exports = {

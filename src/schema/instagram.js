@@ -162,6 +162,9 @@ function getPostCommonFields(type) {
     postUpdate: {
       type: GraphQLString
     },
+    hasLocation: {
+      type: GraphQLBoolean
+    },
     user: {
       type: getUserType(type)
     },
@@ -281,6 +284,12 @@ const query = {
       },
       postUpdate: {
         type: GraphQLString
+      },
+      hasLocation: {
+        type: GraphQLBoolean
+      },
+      userId: {
+        type: GraphQLString
       }
     },
     resolve: (root, {
@@ -295,7 +304,9 @@ const query = {
         since,
         to,
         lastCheck,
-        postUpdate
+        postUpdate,
+        hasLocation,
+        userId
       }) =>
       getPosts({
         _id,
@@ -309,7 +320,9 @@ const query = {
         since,
         to,
         lastCheck,
-        postUpdate
+        postUpdate,
+        hasLocation,
+        userId
       }),
   },
 
