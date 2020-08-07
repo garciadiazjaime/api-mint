@@ -158,6 +158,67 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, userId })
 }
 
+async function getProfiles({first, state, coordinates}) {
+  const radiusInMTS = 1000 * 5;
+
+  const filters = [
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates
+        },
+        distanceField: "dist.calculated",
+        maxDistance: radiusInMTS,
+        spherical: true
+      }
+    },
+    {
+      $match: {
+        state
+      }
+    },
+    {
+      $group: {
+        _id: "$user.id",
+        username: {
+          $first: "$user.username"
+        },
+        title: {
+          $first: "$caption"
+        },
+        phones: {
+          $first: "$meta.phones"
+        },
+        keywords: {
+          $first: "$meta.options"
+        },
+        posts: {
+          $push: {
+            mediaUrl: "$mediaUrl",
+            caption: "$caption"
+          }
+        },
+        meta: {
+          $first: "$meta"
+        },
+        createdAt: {
+          $first: "$createdAt"
+        },
+      }
+    },
+    {
+      $limit: first
+    },
+    {
+      $sort : { 'meta.rank': -1, 'createdAt': -1 }
+    }
+  ]
+
+  return PostModel.aggregate(filters)
+}
+
 module.exports = {
-  getPosts
+  getPosts,
+  getProfiles
 }

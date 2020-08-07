@@ -14,7 +14,8 @@ const {
   UserModel
 } = require('../model/instagramModel');
 const {
-  getPosts
+  getPosts,
+  getProfiles
 } = require('../util/instagram')
 const {
   getType,
@@ -245,6 +246,42 @@ function getUserType(type) {
   return getType(name, fields)
 }
 
+const ProfilePost = new GraphQLObjectType({
+  name: 'ProfilePost',
+  fields: () => ({
+    mediaUrl: {
+      type: GraphQLString
+    },
+    caption: {
+      type: GraphQLString
+    }
+  })
+})
+
+const ProfileType = new GraphQLObjectType({
+  name: 'Profile',
+  fields: () => ({
+    title: {
+      type: GraphQLString
+    },
+    username: {
+      type: GraphQLString
+    },
+    phones: {
+      type: GraphQLList(GraphQLString)
+    },
+    keywords: {
+      type: GraphQLList(GraphQLString)
+    },
+    posts: {
+      type: GraphQLList(ProfilePost)
+    },
+    ids: {
+      type: GraphQLList(GraphQLString)
+    }
+  })
+})
+
 const query = {
   posts: {
     type: new GraphQLList(getPostType('Query')),
@@ -324,6 +361,27 @@ const query = {
         hasLocation,
         userId
       }),
+  },
+  profile: {
+    type: new GraphQLList(ProfileType),
+    args: {
+      first: {
+        type: GraphQLInt
+      },
+      state: {
+        type: GraphQLString
+      },
+      coordinates: {
+        type: GraphQLList(GraphQLFloat)
+      },
+    },
+    resolve: (root, {
+      first = 50,
+      state,
+      coordinates,
+    }) => {
+      return getProfiles({first, state, coordinates})
+    }
   },
 
   locations: {
