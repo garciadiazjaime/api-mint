@@ -261,10 +261,10 @@ const ProfilePost = new GraphQLObjectType({
 const ProfileType = new GraphQLObjectType({
   name: 'Profile',
   fields: () => ({
-    title: {
+    username: {
       type: GraphQLString
     },
-    username: {
+    title: {
       type: GraphQLString
     },
     phones: {
@@ -276,9 +276,12 @@ const ProfileType = new GraphQLObjectType({
     posts: {
       type: GraphQLList(ProfilePost)
     },
-    ids: {
-      type: GraphQLList(GraphQLString)
-    }
+    address: {
+      type: GraphQLString
+    },
+    dist: {
+      type: GraphQLString
+    },
   })
 })
 

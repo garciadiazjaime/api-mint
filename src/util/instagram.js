@@ -168,7 +168,7 @@ async function getProfiles({first, state, coordinates}) {
           type: "Point",
           coordinates
         },
-        distanceField: "dist.calculated",
+        distanceField: "dist",
         maxDistance: radiusInMTS,
         spherical: true
       }
@@ -198,6 +198,12 @@ async function getProfiles({first, state, coordinates}) {
             mediaUrl: "$mediaUrl",
             caption: "$caption"
           }
+        },
+        address: {
+          $first: "$location.address.street"
+        },
+        dist: {
+          $first: "$dist"
         },
         meta: {
           $first: "$meta"
