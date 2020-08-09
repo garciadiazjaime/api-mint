@@ -166,6 +166,9 @@ function getPostCommonFields(type) {
     hasLocation: {
       type: GraphQLBoolean
     },
+    hasPhone: {
+      type: GraphQLBoolean
+    },
     user: {
       type: getUserType(type)
     },
@@ -328,6 +331,9 @@ const query = {
       hasLocation: {
         type: GraphQLBoolean
       },
+      hasPhone: {
+        type: GraphQLBoolean
+      },
       userId: {
         type: GraphQLString
       }
@@ -346,6 +352,7 @@ const query = {
         lastCheck,
         postUpdate,
         hasLocation,
+        hasPhone,
         userId
       }) =>
       getPosts({
@@ -362,6 +369,7 @@ const query = {
         lastCheck,
         postUpdate,
         hasLocation,
+        hasPhone,
         userId
       }),
   },
