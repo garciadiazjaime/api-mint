@@ -189,7 +189,11 @@ async function getProfiles({first, state, coordinates}) {
           $first: "$user.username"
         },
         title: {
-          $first: "$caption"
+          $first: {
+            $ifNull: ["$location.name", {
+              $ifNull: ["$user.fullName", "$user.username"]
+            }]
+          }
         },
         phones: {
           $first: "$meta.phones"
