@@ -185,6 +185,9 @@ async function getProfiles({first, state, coordinates}) {
     {
       $group: {
         _id: "$user.id",
+        id: {
+          $first: "$id"
+        },
         username: {
           $first: "$user.username"
         },

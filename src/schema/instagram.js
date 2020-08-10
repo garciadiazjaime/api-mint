@@ -264,6 +264,9 @@ const ProfilePost = new GraphQLObjectType({
 const ProfileType = new GraphQLObjectType({
   name: 'Profile',
   fields: () => ({
+    id: {
+      type: GraphQLString
+    },
     username: {
       type: GraphQLString
     },
