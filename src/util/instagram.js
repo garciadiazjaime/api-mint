@@ -201,6 +201,9 @@ async function getProfiles({first, state, coordinates}) {
         mediaUrl: {
           $first: "$mediaUrl"
         },
+        caption: {
+          $first: "$caption"
+        },
         phones: {
           $first: "$meta.phones"
         },
