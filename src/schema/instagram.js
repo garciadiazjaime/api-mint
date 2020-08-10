@@ -273,6 +273,9 @@ const ProfileType = new GraphQLObjectType({
     title: {
       type: GraphQLString
     },
+    mediaUrl: {
+      type: GraphQLString
+    },
     phones: {
       type: GraphQLList(GraphQLString)
     },

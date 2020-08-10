@@ -198,6 +198,9 @@ async function getProfiles({first, state, coordinates}) {
             }]
           }
         },
+        mediaUrl: {
+          $first: "$mediaUrl"
+        },
         phones: {
           $first: "$meta.phones"
         },
