@@ -162,15 +162,57 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId })
 }
 
-async function getProfiles({first, state, coordinates}) {
+function getUsernameCoordinates({ username, first, state }) {
+  const filters = [
+    {
+      $match: {
+        state,
+        'user.username': username,
+        'location.location.coordinates': {
+          $exists: 1
+        }
+      }
+    },
+    {
+      $limit: first
+    },
+    {
+      $group: {
+        _id: "$location.location.coordinates",
+        count: {
+          $sum: 1
+        }
+      }
+    },
+    {
+      $sort : { 'count': -1 }
+    },
+    {
+      $limit: 1
+    },
+  ]
+
+  return PostModel.aggregate(filters)
+}
+
+async function getProfiles({ first, state, coordinates, username }) {
   const radiusInMTS = 1000 * 5;
+  let coordinatesSelected = coordinates
+
+  if (username) {
+    const response = await getUsernameCoordinates({ first, state, username })
+
+    if (Array.isArray(response) && response.length) {
+      coordinatesSelected = response[0]._id
+    }
+  }
 
   const filters = [
     {
       $geoNear: {
         near: {
           type: "Point",
-          coordinates
+          coordinates: coordinatesSelected
         },
         distanceField: "dist",
         maxDistance: radiusInMTS,
@@ -222,8 +264,8 @@ async function getProfiles({first, state, coordinates}) {
         dist: {
           $first: "$dist"
         },
-        meta: {
-          $first: "$meta"
+        rank: {
+          $first: "$meta.rank"
         },
         createdAt: {
           $first: "$createdAt"
@@ -231,11 +273,11 @@ async function getProfiles({first, state, coordinates}) {
       }
     },
     {
-      $limit: first
+      $sort : { 'rank': -1, 'createdAt': -1 }
     },
     {
-      $sort : { 'meta.rank': -1, 'createdAt': -1 }
-    }
+      $limit: first
+    },
   ]
 
   return PostModel.aggregate(filters)

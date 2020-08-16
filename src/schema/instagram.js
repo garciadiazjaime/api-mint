@@ -394,13 +394,17 @@ const query = {
       coordinates: {
         type: GraphQLList(GraphQLFloat)
       },
+      username: {
+        type: GraphQLString
+      }
     },
     resolve: (root, {
       first = 50,
       state,
       coordinates,
+      username,
     }) => {
-      return getProfiles({first, state, coordinates})
+      return getProfiles({ first, state, coordinates, username })
     }
   },
 
