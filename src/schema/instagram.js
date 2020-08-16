@@ -294,6 +294,9 @@ const ProfileType = new GraphQLObjectType({
     dist: {
       type: GraphQLString
     },
+    rank: {
+      type: GraphQLInt
+    }
   })
 })
 
