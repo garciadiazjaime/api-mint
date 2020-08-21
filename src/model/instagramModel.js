@@ -56,6 +56,7 @@ const PostSchema = new mongoose.Schema({
   postUpdate: { type: Date }, // update image
   hasLocation: { type: Boolean }, // helps to add location when post does not have one
   hasPhone: { type: Boolean }, // helps to add phone when post does not have one
+  invalidImage: { type: Boolean},  // helps to refresh imgs reported by users
 
   user: UserSchema,
   location: LocationSchema,

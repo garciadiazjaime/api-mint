@@ -348,6 +348,9 @@ const query = {
       },
       userId: {
         type: GraphQLString
+      },
+      invalidImage: {
+        type: GraphQLBoolean
       }
     },
     resolve: (root, {
@@ -365,7 +368,8 @@ const query = {
         postUpdate,
         hasLocation,
         hasPhone,
-        userId
+        userId,
+        invalidImage
       }) =>
       getPosts({
         _id,
@@ -382,7 +386,8 @@ const query = {
         postUpdate,
         hasLocation,
         hasPhone,
-        userId
+        userId,
+        invalidImage
       }),
   },
   profile: {
@@ -541,11 +546,38 @@ function getMutation(type, inputGetter, Model) {
   }
 }
 
+const InstagramPostImageMutation = {
+  type: GraphQLString,
+  args: {
+    mediaUrl: {
+      type: GraphQLString
+    },
+  },
+  resolve: async (root, args) => {
+    if (!args || !args.mediaUrl) {
+      return new Error('ERROR_IMAGE_MUTATION')
+    }
+
+    const posts = await PostModel.find({
+      mediaUrl: args.mediaUrl
+    })
+
+    const promises = posts.map(post => {
+      post.invalidImage = true
+      return post.save()
+    })
+
+    await Promise.all(promises)
+
+    return "OK"
+  }
+}
 
 const mutation = {
   createInstagramPost: getMutation('InstagramPost', getPostType('Input'), PostModel),
   createInstagramLocation: getMutation('InstagramLocation', getLocationType('Input'), LocationModel),
   createInstagramUser: getMutation('InstragramUser', getUserType('Input'), UserModel),
+  updateInstagramPostImage: InstagramPostImageMutation
 }
 
 module.exports = {
