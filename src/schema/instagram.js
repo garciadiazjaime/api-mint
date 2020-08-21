@@ -178,6 +178,9 @@ function getPostCommonFields(type) {
     meta: {
       type: getMetaType(type)
     },
+    invalidImage: {
+      type: GraphQLBoolean
+    }
   }
 
   if (type.includes('Input')) {
