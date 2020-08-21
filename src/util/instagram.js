@@ -126,11 +126,11 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
     query.$or = [{postUpdate: {$exists: 0}}, {postUpdate: {$lte: new Date(postUpdate)}}, {mediaUrl: null}]
   }
 
-  if (!hasLocation) {
+  if (hasLocation === false) {
     query.$and = [ {hasLocation: {$exists: 0}}, {'location.location.coordinates': { $exists: 0}} ]
   }
 
-  if (!hasPhone) {
+  if (!hasPhone === false) {
     query.$and = [ { hasPhone: {$exists: 0} }, {'meta.phones': []} ]
   }
 
