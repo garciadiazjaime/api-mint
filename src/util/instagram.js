@@ -262,7 +262,13 @@ async function getProfiles({ first, state, coordinates, username }) {
         },
         posts: {
           $push: {
-            mediaUrl: "$mediaUrl",
+            mediaUrl: {
+              $first: {
+                $ifNull: ["$mediaUrl", {
+                  $arrayElemAt: ["$children.media_url", 0]
+                }]
+              }
+            },
             caption: "$caption"
           }
         },
