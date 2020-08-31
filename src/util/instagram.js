@@ -263,11 +263,9 @@ async function getProfiles({ first, state, coordinates, username }) {
         posts: {
           $push: {
             mediaUrl: {
-              $first: {
-                $ifNull: ["$mediaUrl", {
-                  $arrayElemAt: ["$children.media_url", 0]
-                }]
-              }
+              $ifNull: ["$mediaUrl", {
+                $arrayElemAt: ["$children.media_url", 0]
+              }]
             },
             caption: "$caption"
           }
