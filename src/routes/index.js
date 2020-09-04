@@ -7,7 +7,6 @@ const router = express.Router()
 
 router.use('/graphiql', graphqlHTTP({
   schema,
-  graphiql: true,
 }));
 
 module.exports = router

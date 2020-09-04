@@ -78,7 +78,7 @@ router.get('/instagram/profiles', async (req, res) => {
     return res.status(500).send('error')
   }
 
-  const profiles = await getProfiles({ first, state, coordinates: [parseFloat(lng), parseFloat(lat)], username })
+  const profiles = await getProfiles({ first: parseInt(first), state, coordinates: [parseFloat(lng), parseFloat(lat)], username })
 
   res.send(profiles)
 })
