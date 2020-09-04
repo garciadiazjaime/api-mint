@@ -2,6 +2,10 @@ const express = require('express')
 
 const { savePost, saveLocation, saveUser, schedule, remove, getPost, saveBrand, updateBrand, updatePostState } = require('../services/instagramService')
 
+const {
+  getProfiles
+} = require('../util/instagram')
+
 const router = express.Router()
 
 router.post('/instagram/post', async (req, res) => {
@@ -66,6 +70,17 @@ router.post('/instagram/brands/meta', async (req, res) => {
   const response = await Promise.all(data.map(updateBrand))
 
   res.send(response)
+})
+
+router.get('/instagram/profiles', async (req, res) => {
+  const { first = 100, state, lng, lat, username } = req.query
+  if (!lng || !lat) {
+    return res.status(500).send('error')
+  }
+
+  const profiles = await getProfiles({ first, state, coordinates: [parseFloat(lng), parseFloat(lat)], username })
+
+  res.send(profiles)
 })
 
 module.exports = router
