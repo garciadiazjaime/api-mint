@@ -132,6 +132,15 @@ const MutationDelete = {
   }
 }
 
+const MutationDeleteAll = {
+  type: GraphQLString,
+  resolve: async () => {
+    await TodoModel.remove()
+
+    return "OK"
+  }
+}
+
 const MutationUpdate = {
   type: TodoType,
   args: {
@@ -155,6 +164,7 @@ const MutationUpdate = {
 const mutation = {
   addTodos: MutationAdd,
   deleteTodo: MutationDelete,
+  deleteTodos: MutationDeleteAll,
   updateTodo: MutationUpdate,
 }
 
