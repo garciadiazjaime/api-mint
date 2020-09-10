@@ -8,6 +8,7 @@ const { query: portQuery, mutation: portMutation } = require('./port')
 const { query: realStateQuery, mutation: realStateMutation } = require('./realState')
 const { query: instagramPostQuery, mutation: instagramPostMutation } = require('./instagram')
 const { query: gobmxnQuery, mutation: gobmxnMutation } = require('./gobmxn')
+const { query: migrimapQuery, mutation: migrimapMutation } = require('./migrimap')
 
 
 const query = new GraphQLObjectType({
@@ -18,6 +19,7 @@ const query = new GraphQLObjectType({
     ...realStateQuery,
     ...instagramPostQuery,
     ...gobmxnQuery,
+    ...migrimapQuery
   },
 })
 
@@ -29,6 +31,7 @@ const mutation = new GraphQLObjectType({
     ...realStateMutation,
     ...instagramPostMutation,
     ...gobmxnMutation,
+    ...migrimapMutation
   }
 })
 
