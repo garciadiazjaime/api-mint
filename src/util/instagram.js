@@ -273,6 +273,9 @@ async function getProfiles({ first, state, coordinates, username }) {
         address: {
           $first: "$location.address.street"
         },
+        gps: {
+          $first: "$location.location.coordinates"
+        },
         dist: {
           $first: "$dist"
         },

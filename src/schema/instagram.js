@@ -294,6 +294,9 @@ const ProfileType = new GraphQLObjectType({
     address: {
       type: GraphQLString
     },
+    gps: {
+      type: GraphQLList(GraphQLFloat)
+    },
     dist: {
       type: GraphQLString
     },
