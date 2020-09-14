@@ -133,8 +133,29 @@ const MutationAdd = {
   }
 }
 
+const MutationDelete = {
+  type: GraphQLString,
+  args: {
+    id: {
+      type: GraphQLString,
+    },
+  },
+  resolve: async (root, args) => {
+    if (!args || !args.id) {
+      return new Error('ERROR_MIGRIMAP')
+    }
+
+    await Place.deleteOne({
+      _id: args.id
+    })
+
+    return "OK"
+  }
+}
+
 const mutation = {
   addMigriPlace: MutationAdd,
+  deleteMigriPlace: MutationDelete
 }
 
 module.exports = {
