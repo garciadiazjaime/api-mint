@@ -293,6 +293,26 @@ async function getProfiles({ first, state, coordinates, username }) {
     {
       $limit: first
     },
+    {
+      $project: {
+        _id: 1,
+        id: 1,
+        username: 1,
+        title: 1,
+        mediaUrl: 1,
+        caption: 1,
+        phones: 1,
+        keywords: 1,
+        posts: {
+          $slice: [ "$posts", 20 ]
+        },
+        address: 1,
+        gps: 1,
+        dist: 1,
+        rank: 1,
+        createdAt: 1
+      }
+    }
   ]
 
   return PostModel.aggregate(filters)
