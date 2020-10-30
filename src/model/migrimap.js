@@ -18,7 +18,8 @@ const Schema = new mongoose.Schema({
   schedule: { type: String },
   capacity: { type: String },
   population: { type: String },
-  category: { type: String }
+  category: { type: String },
+  image: { type: String },
 }, {
   timestamps: true
 });

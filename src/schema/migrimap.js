@@ -65,6 +65,9 @@ const commonFields = {
   },
   category: {
     type: GraphQLString
+  },
+  image: {
+    type: GraphQLString
   }
 }
 
@@ -117,19 +120,17 @@ const MutationAdd = {
     }
 
     if (args.id) {
-      await Place.findOneAndUpdate({
+      const response = await Place.findOneAndUpdate({
         _id: args.id
       }, args, {
         upsert: true,
         new: true
       })
-    } else {
-      await new Place(args).save()
+      return response._id
     }
 
-    
-
-    return "OK"
+    const response = await new Place(args).save()
+    return response._id
   }
 }
 

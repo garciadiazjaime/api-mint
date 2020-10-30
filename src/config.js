@@ -75,6 +75,20 @@ const config = convict({
       default: '',
       env: 'TW_CONSUMER_SECRET',
     }
+  },
+  cloudinary: {
+    user: {
+      default: '',
+      env: 'CLOUDINARY_USER',
+    },
+    key: {
+      default: '',
+      env: 'CLOUDINARY_KEY',
+    },
+    secret: {
+      default: '',
+      env: 'CLOUDINARY_SECRET',
+    },
   }
 });
 
