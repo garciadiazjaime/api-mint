@@ -25,7 +25,7 @@ LocationSchema.index({ location: "2dsphere" });
 const MetaSchema = new mongoose.Schema({
   options: { type: Array },
   phones: { type: Array },
-  rank: { type: Number, default: 0 }
+  rank: { type: Number }
 })
 
 const UserSchema = new mongoose.Schema({

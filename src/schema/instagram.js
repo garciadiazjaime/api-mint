@@ -653,6 +653,21 @@ const LocationInputType = new GraphQLInputObjectType({
       type: GPSInputType,
     }
   })
+})
+
+const MetaInputType = new GraphQLInputObjectType({
+  name: 'MetaInputType',
+  fields: () => ({
+    options: {
+      type: new GraphQLList(GraphQLString)
+    },
+    phones: {
+      type: new GraphQLList(GraphQLString)
+    },
+    rank: {
+      type: GraphQLInt
+    },
+  })
 })  
 
 const MutationInstagramPost = {
@@ -695,6 +710,9 @@ const MutationInstagramPost = {
     },
     location: {
       type: LocationInputType,
+    },
+    meta: {
+      type: MetaInputType,
     },
   },
   resolve: async (root, args) => {
