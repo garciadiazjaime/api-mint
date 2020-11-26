@@ -83,7 +83,10 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
     query['$text'] = { $search: keyword }
   }
 
-  if (state) {
+  if (state === 'RAW') {
+    query.$and = [ {state: {$exists: 0}} ]
+  }
+  else if (state) {
     query.state = state
   }
 

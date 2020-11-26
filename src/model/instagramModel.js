@@ -11,11 +11,10 @@ const LocationSchema = new mongoose.Schema({
   id: { type:String },
   name: { type: String },
   slug: { type: String },
-  location: {
+  gps: {
     type: { type: String },
     coordinates: { type: [], default: undefined }
   },
-  state: { type: String, default: 'RAW' },
   address: AddressSchema,
 }, {
   timestamps: true
@@ -34,6 +33,8 @@ const UserSchema = new mongoose.Schema({
   username: { type: String },
   fullName: { type: String },
   profilePicture: { type: String },
+  followedBy: { type: String },
+  postsCount: { type: String },
 }, {
   timestamps: true
 })
@@ -50,7 +51,7 @@ const PostSchema = new mongoose.Schema({
   children: { type: Array },
   city: { type: String },
   source: { type: String },
-  state: { type: String, state: 'MAPPED' }, // [MAPPED, DELETED, BLOCKED]
+  state: { type: String }, // [MAPPED, DELETED, BLOCKED]
   published: { type: Boolean, default: false },
   lastCheck: { type: Date }, // delete check
   postUpdate: { type: Date }, // update image

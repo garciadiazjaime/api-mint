@@ -1,6 +1,7 @@
 const {
   GraphQLNonNull,
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLString,
   GraphQLList,
   GraphQLInt,
@@ -579,7 +580,225 @@ const InstagramPostImageMutation = {
   }
 }
 
+const UserInputType = new GraphQLInputObjectType({
+  name: 'UserInputType',
+  fields: () => ({
+    id: {
+      type: GraphQLString,
+    },
+    username: {
+      type: GraphQLString,
+    },
+    fullName: {
+      type: GraphQLString,
+    },
+    profilePicture: {
+      type: GraphQLString,
+    },
+    followedBy: {
+      type: GraphQLInt,
+    },
+    postsCount: {
+      type: GraphQLInt,
+    }
+  })
+})
+
+const AddressInputType = new GraphQLInputObjectType({
+  name: 'AddressInputType',
+  fields: () => ({
+    street: {
+      type: GraphQLString
+    },
+    zipCode: {
+      type: GraphQLString
+    },
+    city: {
+      type: GraphQLString
+    },
+    country: {
+      type: GraphQLString
+    }
+  })
+})
+
+const GPSInputType = new GraphQLInputObjectType({
+  name: 'GPSInputType',
+  fields: () => ({
+    type: {
+      type: GraphQLString
+    },
+    coordinates: {
+      type: GraphQLList(GraphQLFloat)
+    },
+  })
+})
+
+const LocationInputType = new GraphQLInputObjectType({
+  name: 'LocationInputType',
+  fields: () => ({
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    slug: {
+      type: GraphQLString,
+    },
+    address: {
+      type: AddressInputType,
+    },
+    gps: {
+      type: GPSInputType,
+    }
+  })
+})  
+
+const MutationInstagramPost = {
+  type: GraphQLString,
+  args: {
+    id: {
+      type: GraphQLString,
+    },
+
+    permalink: {
+      type: GraphQLString,
+    },
+    mediaUrl: {
+      type: GraphQLString,
+    },
+    mediaType: {
+      type: GraphQLString,
+    },
+    caption: {
+      type: GraphQLString,
+    },
+    commentsCount: {
+      type: GraphQLInt,
+    },
+    likeCount: {
+      type: GraphQLInt,
+    },
+    city: {
+      type: GraphQLString,
+    },
+    source: {
+      type: GraphQLString,
+    },
+
+    state: {
+      type: GraphQLString,
+    },
+    user: {
+      type: UserInputType,
+    },
+    location: {
+      type: LocationInputType,
+    },
+  },
+  resolve: async (root, args) => {
+    console.log('MutationInstagramPost', args)
+    if (!args || !args.id) {
+      return 'ERROR_INSTAGRAM_POST'
+    }
+
+    const response = await PostModel.findOneAndUpdate({
+      id: args.id
+    }, args, {
+      upsert: true,
+      new: true
+    })
+
+    console.log('response', response)
+
+    return "OK"
+  }
+}
+
+const MutationInstagramUser = {
+  type: GraphQLString,
+  args: {
+    id: {
+      type: GraphQLString,
+    },
+    username: {
+      type: GraphQLString,
+    },
+    fullName: {
+      type: GraphQLString,
+    },
+    profilePicture: {
+      type: GraphQLString,
+    },
+    followedBy: {
+      type: GraphQLInt,
+    },
+    postsCount: {
+      type: GraphQLInt,
+    }
+  },
+  resolve: async (root, args) => {
+    console.log('MutationInstagramUser', args)
+    if (!args || !args.id) {
+      return 'ERROR_INSTAGRAM_USER'
+    }
+
+    const response = await UserModel.findOneAndUpdate({
+      id: args.id
+    }, args, {
+      upsert: true,
+      new: true
+    })
+
+    console.log('response', response)
+
+    return "OK"
+  }
+}
+
+const MutationInstagramLocation = {
+  type: GraphQLString,
+  args: {
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    slug: {
+      type: GraphQLString,
+    },
+    address: {
+      type: AddressInputType,
+    },
+    gps: {
+      type: GPSInputType,
+    }
+  },
+  resolve: async (root, args) => {
+    console.log('MutationInstagramLocation', args)
+    if (!args || !args.id) {
+      return 'ERROR_INSTAGRAM_POST'
+    }
+
+    const response = await LocationModel.findOneAndUpdate({
+      id: args.id
+    }, args, {
+      upsert: true,
+      new: true
+    })
+
+    console.log('response', response)
+
+    return "OK"
+  }
+}
+
 const mutation = {
+  updateInstagramPost: MutationInstagramPost,
+  updateInstagramUser: MutationInstagramUser,
+  updateInstagramLocation: MutationInstagramLocation,
   createInstagramPost: getMutation('InstagramPost', getPostType('Input'), PostModel),
   createInstagramLocation: getMutation('InstagramLocation', getLocationType('Input'), LocationModel),
   createInstagramUser: getMutation('InstragramUser', getUserType('Input'), UserModel),
