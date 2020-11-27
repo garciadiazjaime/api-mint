@@ -9,7 +9,6 @@ const Schema = new mongoose.Schema({
   phone: { type: String },
   servicesFree: { type: String },
   servicesNonFree: { type: String },
-  img: { type: String },
   website: { type: String },
   socialNetwork: { type: String },
   ceo: { type: String },
@@ -19,7 +18,8 @@ const Schema = new mongoose.Schema({
   capacity: { type: String },
   population: { type: String },
   category: { type: String },
-  image: { type: String },
+  imageUrl: { type: String },
+  imageId: { type: String },
 }, {
   timestamps: true
 });

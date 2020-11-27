@@ -11,7 +11,9 @@ const router = express.Router()
 
 router.post('/image/:entity/:id', upload.single("file"), (req, res) => {
   const { entity, id } = req.params
-  save(req.file, { entity, id })
+  const { imageId } = req.body
+
+  save(req.file, { entity, id, imageId })
     .then(response => {
       res.send(response)
     })

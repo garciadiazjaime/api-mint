@@ -36,9 +36,6 @@ const commonFields = {
   servicesNonFree: {
     type: GraphQLString
   },
-  img: {
-    type: GraphQLString,
-  },
   website: {
     type: GraphQLString
   },
@@ -66,9 +63,12 @@ const commonFields = {
   category: {
     type: GraphQLString
   },
-  image: {
+  imageUrl: {
     type: GraphQLString
-  }
+  },
+  imageId: {
+    type: GraphQLString
+  },
 }
 
 
