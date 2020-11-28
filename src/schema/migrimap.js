@@ -3,73 +3,35 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
+  GraphQLFloat,
+  GraphQLInputObjectType
 } = require('graphql/type');
 
 const { Place } = require('../model/migrimap');
 
+const GPSInputType = new GraphQLInputObjectType({
+  name: 'GPSInputTypeMigrimap',
+  fields: () => ({
+    type: {
+      type: GraphQLString
+    },
+    coordinates: {
+      type: GraphQLList(GraphQLFloat)
+    },
+  })
+})
 
-const commonFields = {
-  id: {
-    type: GraphQLString,
-  },
-  name: {
-    type: GraphQLString,
-  },
-  description: {
-    type: GraphQLString,
-  },
-  profile: {
-    type: GraphQLString
-  },
-  address: {
-    type: GraphQLString
-  },
-  gmaps: {
-    type: GraphQLString
-  },
-  phone: {
-    type: GraphQLString,
-  },
-  servicesFree: {
-    type: GraphQLString
-  },
-  servicesNonFree: {
-    type: GraphQLString
-  },
-  website: {
-    type: GraphQLString
-  },
-  socialNetwork: {
-    type: GraphQLString
-  },
-  ceo: {
-    type: GraphQLString
-  },
-  owner: {
-    type: GraphQLString
-  },
-  language: {
-    type: GraphQLString
-  },
-  schedule: {
-    type: GraphQLString
-  },
-  capacity: {
-    type: GraphQLString
-  },
-  population: {
-    type: GraphQLString
-  },
-  category: {
-    type: GraphQLString
-  },
-  imageUrl: {
-    type: GraphQLString
-  },
-  imageId: {
-    type: GraphQLString
-  },
-}
+const GPSType = new GraphQLObjectType({
+  name: 'GPSTypeMigrimap',
+  fields: () => ({
+    type: {
+      type: GraphQLString
+    },
+    coordinates: {
+      type: GraphQLList(GraphQLFloat)
+    },
+  })
+})
 
 
 const MigriPlaceQueryType = new GraphQLObjectType({
@@ -78,7 +40,69 @@ const MigriPlaceQueryType = new GraphQLObjectType({
     _id: {
       type: GraphQLString,
     },
-    ...commonFields
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    description: {
+      type: GraphQLString,
+    },
+    profile: {
+      type: GraphQLString
+    },
+    address: {
+      type: GraphQLString
+    },
+    gmaps: {
+      type: GraphQLString
+    },
+    phone: {
+      type: GraphQLString,
+    },
+    servicesFree: {
+      type: GraphQLString
+    },
+    servicesNonFree: {
+      type: GraphQLString
+    },
+    website: {
+      type: GraphQLString
+    },
+    socialNetwork: {
+      type: GraphQLString
+    },
+    ceo: {
+      type: GraphQLString
+    },
+    owner: {
+      type: GraphQLString
+    },
+    language: {
+      type: GraphQLString
+    },
+    schedule: {
+      type: GraphQLString
+    },
+    capacity: {
+      type: GraphQLString
+    },
+    population: {
+      type: GraphQLString
+    },
+    category: {
+      type: GraphQLString
+    },
+    imageUrl: {
+      type: GraphQLString
+    },
+    imageId: {
+      type: GraphQLString
+    },
+    gps: {
+      type: GPSType,
+    }
   }),
 });
 
@@ -112,7 +136,69 @@ const query = {
 const MutationAdd = {
   type: GraphQLString,
   args: {
-    ...commonFields
+    id: {
+      type: GraphQLString,
+    },
+    name: {
+      type: GraphQLString,
+    },
+    description: {
+      type: GraphQLString,
+    },
+    profile: {
+      type: GraphQLString
+    },
+    address: {
+      type: GraphQLString
+    },
+    gmaps: {
+      type: GraphQLString
+    },
+    phone: {
+      type: GraphQLString,
+    },
+    servicesFree: {
+      type: GraphQLString
+    },
+    servicesNonFree: {
+      type: GraphQLString
+    },
+    website: {
+      type: GraphQLString
+    },
+    socialNetwork: {
+      type: GraphQLString
+    },
+    ceo: {
+      type: GraphQLString
+    },
+    owner: {
+      type: GraphQLString
+    },
+    language: {
+      type: GraphQLString
+    },
+    schedule: {
+      type: GraphQLString
+    },
+    capacity: {
+      type: GraphQLString
+    },
+    population: {
+      type: GraphQLString
+    },
+    category: {
+      type: GraphQLString
+    },
+    imageUrl: {
+      type: GraphQLString
+    },
+    imageId: {
+      type: GraphQLString
+    },
+    gps: {
+      type: GPSInputType,
+    }
   },
   resolve: async (root, args) => {
     if (!args) {

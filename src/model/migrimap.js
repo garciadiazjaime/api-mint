@@ -20,6 +20,10 @@ const Schema = new mongoose.Schema({
   category: { type: String },
   imageUrl: { type: String },
   imageId: { type: String },
+  gps: {
+    type: { type: String },
+    coordinates: { type: [], default: undefined }
+  },
 }, {
   timestamps: true
 });
