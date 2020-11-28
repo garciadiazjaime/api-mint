@@ -102,6 +102,9 @@ const MigriPlaceQueryType = new GraphQLObjectType({
     },
     gps: {
       type: GPSType,
+    },
+    dist: {
+      type: GraphQLString
     }
   }),
 });
@@ -113,22 +116,41 @@ const query = {
       id: {
         type: GraphQLString,
       },
+      lngLat: {
+        type: GraphQLList(GraphQLFloat)
+      },
       first: {
         type: GraphQLInt
       },
     },
-    resolve: async (root, {
+    resolve: (root, {
       id,
-      first = 500,
+      lngLat,
+      first = 50,
     }) => {
       const query = {}
+
+      if (lngLat) {
+        return Place.aggregate([
+          {
+            $geoNear: {
+              near: {
+                type: "Point",
+                coordinates: lngLat
+              },
+              distanceField: "dist",
+              maxDistance: 7000,
+              spherical: true
+            }
+          }
+       ])
+      }
+
       if (id) {
         query._id = id
       }
 
-      const items = await Place.find(query).sort({name: 1}).limit(first);
-
-      return items
+      return Place.find(query).sort({name: 1}).limit(first);
     }
   }
 }

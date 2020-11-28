@@ -28,6 +28,8 @@ const Schema = new mongoose.Schema({
   timestamps: true
 });
 
+Schema.index({ gps: "2dsphere" });
+
 const Model = mongoose.model('migriplace', Schema);
 
 module.exports = {

@@ -20,7 +20,7 @@ const LocationSchema = new mongoose.Schema({
   timestamps: true
 })
 
-LocationSchema.index({ location: "2dsphere" });
+LocationSchema.index({ gps: "2dsphere" });
 
 const MetaSchema = new mongoose.Schema({
   options: { type: Array },
