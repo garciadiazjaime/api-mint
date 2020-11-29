@@ -716,19 +716,16 @@ const MutationInstagramPost = {
     },
   },
   resolve: async (root, args) => {
-    console.log('MutationInstagramPost', args)
     if (!args || !args.id) {
       return 'ERROR_INSTAGRAM_POST'
     }
 
-    const response = await PostModel.findOneAndUpdate({
+    await PostModel.findOneAndUpdate({
       id: args.id
     }, args, {
       upsert: true,
       new: true
     })
-
-    console.log('response', response)
 
     return "OK"
   }
@@ -757,19 +754,16 @@ const MutationInstagramUser = {
     }
   },
   resolve: async (root, args) => {
-    console.log('MutationInstagramUser', args)
     if (!args || !args.id) {
       return 'ERROR_INSTAGRAM_USER'
     }
 
-    const response = await UserModel.findOneAndUpdate({
+    await UserModel.findOneAndUpdate({
       id: args.id
     }, args, {
       upsert: true,
       new: true
     })
-
-    console.log('response', response)
 
     return "OK"
   }
@@ -795,19 +789,16 @@ const MutationInstagramLocation = {
     }
   },
   resolve: async (root, args) => {
-    console.log('MutationInstagramLocation', args)
     if (!args || !args.id) {
       return 'ERROR_INSTAGRAM_POST'
     }
 
-    const response = await LocationModel.findOneAndUpdate({
+    await LocationModel.findOneAndUpdate({
       id: args.id
     }, args, {
       upsert: true,
       new: true
     })
-
-    console.log('response', response)
 
     return "OK"
   }
