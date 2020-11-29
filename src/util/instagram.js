@@ -258,10 +258,14 @@ async function getProfiles({ first, state, coordinates, username }) {
           $first: "$caption"
         },
         phones: {
-          $first: "$meta.phones"
+          $first: {
+            $ifNull: ["$meta.phones", []]
+          }
         },
         keywords: {
-          $first: "$meta.options"
+          $first: {
+            $ifNull: ["$meta.options", []]
+          }
         },
         posts: {
           $push: {
@@ -277,7 +281,7 @@ async function getProfiles({ first, state, coordinates, username }) {
           $first: "$location.address.street"
         },
         gps: {
-          $first: "$location.location.coordinates"
+          $first: "$location.gps.coordinates"
         },
         dist: {
           $first: "$dist"
