@@ -715,7 +715,7 @@ const MutationInstagramPost = {
       type: MetaInputType,
     },
     invalidImage: {
-      type: GraphQLString,
+      type: GraphQLBoolean,
     }
   },
   resolve: async (root, args) => {
