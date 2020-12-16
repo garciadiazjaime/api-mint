@@ -203,7 +203,7 @@ function getUsernameCoordinates({ username, first, state }) {
 }
 
 async function getProfiles({ first, state, coordinates, username }) {
-  const radiusInMTS = 1000 * 5;
+  const radiusInMTS = 1000 * 10;
   let coordinatesSelected = coordinates
 
   if (username) {
@@ -228,7 +228,10 @@ async function getProfiles({ first, state, coordinates, username }) {
     },
     {
       $match: {
-        state
+        state,
+        'location.name': {
+          $ne: 'Tijuana, Baja California'
+        }
       }
     },
     {
