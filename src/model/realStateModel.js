@@ -11,7 +11,8 @@ const RealStateSchema = new mongoose.Schema({
   url: { type: String, unique: true },
   address: { type: String },
   city: { type: String },
-  source: { type: String }
+  source: { type: String },
+  phone: { type: String },
 }, {
   timestamps: true
 });

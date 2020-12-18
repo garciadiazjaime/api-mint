@@ -36,6 +36,9 @@ const commonFields = {
   source: {
     type: GraphQLString
   },
+  phone: {
+    type: GraphQLString
+  },
 }
 
 const RealStateType = new GraphQLObjectType({
@@ -45,7 +48,7 @@ const RealStateType = new GraphQLObjectType({
       type: GraphQLString,
     },
     ...commonFields,
-    location: {
+    gps: {
       type: getGpsType('RealState')
     },
     createdAt: {
