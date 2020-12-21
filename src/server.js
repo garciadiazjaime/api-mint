@@ -16,6 +16,8 @@ const wordRoute = require('./routes/word')
 const imageRoutes = require('./routes/image')
 const route = require('./routes')
 
+const feedmeRoutes = require('./routes/feedme')
+
 const openDatabase = require('./util/openDatabase')
 const config = require('./config')
 
@@ -41,6 +43,7 @@ openDatabase(props.dbUrl)
     app.use('', wordRoute),
     app.use('', imageRoutes)
     app.use('', route)
+    app.use('', feedmeRoutes)
     app.listen(props.port, props.ip, () => debug(`Express Running ${props.ip}:${props.port}`))
   })
   .catch(debug)
