@@ -1,11 +1,9 @@
 const express = require('express')
-const debug = require('debug')('app:cert')
 
 const router = express.Router()
 
 router.get('/.well-known/acme-challenge/:filename', async (req, res) => {
-  debug(req.params.filename)
-  res.send('OK')
+  res.send('8dtGgCLha2B6DovhaP6_jqIynr-x61XmR9i5ee0EKK8.ROJt6qUhmmn0UaHbd-OcDEiLZVnE6klzI57DmiEMZHA')
 })
 
 module.exports = router
