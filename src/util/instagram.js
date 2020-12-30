@@ -101,6 +101,9 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   if (published === true || published === false) {
     query.published = published
   }
+  else if (published === null) {
+    query.$or = [ { published: { $exists: 0 } }, { published: false } ]
+  }
 
   if (locationState) {
     query['location.state'] = locationState
@@ -152,8 +155,8 @@ function getPostByScore({ _id, id, first, keyword, state, published, locationSta
   const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage })
 
   return PostModel.find(query).sort([
-    ['meta.rank', -1],
     ['createdAt', -1],
+    ['meta.rank', -1],
   ]).limit(first)
 }
 
