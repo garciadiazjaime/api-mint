@@ -12,9 +12,9 @@ router.get('/feedme', cors(), async (req, res) => {
   debug(req.query.filters)
   const filters = JSON.parse(req.query.filters)
 
-  const { first, state, lngLat: coordinates, username } = filters
+  const { first, state, lngLat: coordinates, username, category } = filters
 
-  let profiles =  await getProfiles({ first, state, coordinates, username })
+  let profiles =  await getProfiles({ first, state, coordinates, username, category })
 
   profiles = profiles.filter(item => !item.mediaUrl.includes('video'))
 

@@ -205,7 +205,7 @@ function getUsernameCoordinates({ username, first, state }) {
   return PostModel.aggregate(filters)
 }
 
-async function getProfiles({ first, state, coordinates, username }) {
+async function getProfiles({ first, state, coordinates, username, category }) {
   const radiusInMTS = 1000 * 10;
   let coordinatesSelected = coordinates
 
@@ -217,24 +217,32 @@ async function getProfiles({ first, state, coordinates, username }) {
     }
   }
 
+  const firstFilter = category ? {
+    $match: {
+      $text: {
+        $search: category,
+      },
+    }
+  } : {
+    $geoNear: {
+      near: {
+        type: "Point",
+        coordinates: coordinatesSelected
+      },
+      distanceField: "dist",
+      maxDistance: radiusInMTS,
+      spherical: true
+    }
+  }
+
   const filters = [
-    {
-      $geoNear: {
-        near: {
-          type: "Point",
-          coordinates: coordinatesSelected
-        },
-        distanceField: "dist",
-        maxDistance: radiusInMTS,
-        spherical: true
-      }
-    },
+    firstFilter,
     {
       $match: {
         state,
         'location.name': {
           $ne: 'Tijuana, Baja California'
-        }
+        },
       }
     },
     {
