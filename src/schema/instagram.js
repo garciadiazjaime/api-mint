@@ -75,7 +75,7 @@ function getCommonLocationFields(type) {
     slug: {
       type: GraphQLString
     },
-    location: {
+    gps: {
       type: getGpsType(type)
     },
     address: {
