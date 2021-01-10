@@ -329,6 +329,9 @@ const query = {
       published: {
         type: GraphQLBoolean
       },
+      liked: {
+        type: GraphQLBoolean,
+      },
       locationState: {
         type: GraphQLString
       },
@@ -716,7 +719,11 @@ const MutationInstagramPost = {
     },
     invalidImage: {
       type: GraphQLBoolean,
-    }
+    },
+
+    liked: {
+      type: GraphQLBoolean,
+    },
   },
   resolve: async (root, args) => {
     if (!args || !args.id) {

@@ -76,7 +76,7 @@ function getPostsByLocationAndUser({ coordinates, state, first }) {
   return PostModel.aggregate(filters)
 }
 
-function getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage }) {
+function getQueryForPosts({ _id, id, keyword, state, published, liked, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage }) {
   const query = {}
 
   if (keyword) {
@@ -103,6 +103,13 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   }
   else if (published === null) {
     query.$or = [ { published: { $exists: 0 } }, { published: false } ]
+  }
+
+  if (liked === true || liked === false) {
+    query.liked = liked
+  }
+  else if (liked === null) {
+    query.$or = [ { liked: { $exists: 0 } }, { liked: false } ]
   }
 
   if (locationState) {
@@ -151,8 +158,8 @@ function getQueryForPosts({ _id, id, keyword, state, published, locationState, s
   return query
 }
 
-function getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage }) {
-  const query = getQueryForPosts({ _id, id, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage })
+function getPostByScore({ _id, id, first, keyword, state, published, liked, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage }) {
+  const query = getQueryForPosts({ _id, id, keyword, state, published, liked, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage })
 
   return PostModel.find(query).sort([
     ['createdAt', -1],
@@ -161,7 +168,7 @@ function getPostByScore({ _id, id, first, keyword, state, published, locationSta
 }
 
 
-async function getPosts({ _id, id, first, keyword, state, published, locationState, coordinates, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage }) {
+async function getPosts({ _id, id, first, keyword, state, published, liked, locationState, coordinates, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage }) {
   if (Array.isArray(coordinates) && coordinates.length) {
     const postsByLocation = await getPostsByLocationAndUser({ coordinates, state, first })
 
@@ -169,7 +176,7 @@ async function getPosts({ _id, id, first, keyword, state, published, locationSta
   }
 
 
-  return getPostByScore({ _id, id, first, keyword, state, published, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage })
+  return getPostByScore({ _id, id, first, keyword, state, published, liked, locationState, since, to, lastCheck, postUpdate, hasLocation, hasPhone, userId, invalidImage })
 }
 
 function getUsernameCoordinates({ username, first, state }) {
