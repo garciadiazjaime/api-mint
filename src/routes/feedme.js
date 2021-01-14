@@ -15,12 +15,10 @@ router.get('/feedme', cors(), async (req, res) => {
   const categoriesList = categories.split(',')
 
   const promises = categoriesList.map(async (category) => getProfiles({ first: parseInt(first) + 20, state, coordinates, username, category }))
-  const data = await Promise.all(promises)
+  const categoriesData = await Promise.all(promises)
   
-  
-  const profiles = {}
-  categoriesList.forEach((category, index) => {
-    profiles[category] = data[index].filter(item => !item.mediaUrl.includes('video')).slice(0, first).map(item => ({
+  const profiles = categoriesList.map((category, index) => {
+    const data = categoriesData[index].filter(item => !item.mediaUrl.includes('video')).slice(0, first).map(item => ({
       address: item.address,
       caption: item.caption,
       gps: item.gps,
@@ -32,6 +30,11 @@ router.get('/feedme', cors(), async (req, res) => {
       title: item.title,
       username: item.username,
     }))
+
+    return {
+      category,
+      data
+    }
   })
 
   res.send(profiles)
