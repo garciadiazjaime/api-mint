@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors');
-const debug = require('debug')('app:feedme')
 
 const {
   getProfiles
@@ -9,27 +8,31 @@ const {
 const router = express.Router()
 
 router.get('/feedme', cors(), async (req, res) => {
-  debug(req.query.filters)
-  const filters = JSON.parse(req.query.filters)
+  const { first, state, lng, lat, username, categories = '' } = req.query
 
-  const { first, state, lngLat: coordinates, username, category } = filters
+  const coordinates = [lng, lat]
 
-  let profiles =  await getProfiles({ first, state, coordinates, username, category })
+  const categoriesList = categories.split(',')
 
-  profiles = profiles.filter(item => !item.mediaUrl.includes('video'))
-
-  profiles = profiles.slice(0, 48).map(item => ({
-    address: item.address,
-    caption: item.caption,
-    gps: item.gps,
-    id: item.id,
-    keywords: item.keywords,
-    mediaUrl: item.mediaUrl,
-    phone: item.phones[0],
-    posts: item.posts,
-    title: item.title,
-    username: item.username,
-  }))
+  const promises = categoriesList.map(async (category) => getProfiles({ first: parseInt(first) + 20, state, coordinates, username, category }))
+  const data = await Promise.all(promises)
+  
+  
+  const profiles = {}
+  categoriesList.forEach((category, index) => {
+    profiles[category] = data[index].filter(item => !item.mediaUrl.includes('video')).slice(0, first).map(item => ({
+      address: item.address,
+      caption: item.caption,
+      gps: item.gps,
+      id: item.id,
+      keywords: item.keywords,
+      mediaUrl: item.mediaUrl,
+      permalink: item.permalink,
+      phone: item.phones[0],
+      title: item.title,
+      username: item.username,
+    }))
+  })
 
   res.send(profiles)
 })

@@ -275,6 +275,9 @@ async function getProfiles({ first, state, coordinates, username, category }) {
             }]
           }
         },
+        permalink: {
+          $first: "$permalink"
+        },
         caption: {
           $first: "$caption"
         },
@@ -328,6 +331,7 @@ async function getProfiles({ first, state, coordinates, username, category }) {
         username: 1,
         title: 1,
         mediaUrl: 1,
+        permalink: 1,
         caption: 1,
         phones: 1,
         keywords: 1,
