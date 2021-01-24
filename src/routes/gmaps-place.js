@@ -13,8 +13,8 @@ router.get('/gmaps-place',  cors(), async (req, res) => {
 
   const places = await Promise.all(promises)
 
-  const response = categories.map((category, index) => ({
-    category,
+  const response = categories.map((slug, index) => ({
+    slug,
     data: places[index]
   }))
 
@@ -23,12 +23,16 @@ router.get('/gmaps-place',  cors(), async (req, res) => {
 
 router.get('/gmaps-place/:category',  cors(), async (req, res) => {
   const { category } = req.params
+  const { limit = 20 } = req.query
 
   const places = await Place.find({
     type: category
-  })
+  }).limit(limit)
 
-  res.send(places)
+  res.send([{
+    slug: category,
+    data: places
+  }])
 });
 
 module.exports = router;
