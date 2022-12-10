@@ -19,7 +19,7 @@
     "convict": "^6.0.0",
     "cors": "^2.8.4",
     "debug": "^4.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-graphql": "^0.9.0",
     "graphql": "^14.7.0",
     "mint-api-news": "^1.0.20",
